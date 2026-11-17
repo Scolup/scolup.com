@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logos/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Scolup — L'application alternative à EcoleDirecte (notes, devoirs, emploi du temps)</title>
+    <meta
+      name="description"
+      content="Scolup est un client alternatif gratuit et open-source pour EcoleDirecte : notes, moyennes, devoirs, emploi du temps et messages dans une interface moderne avec mode sombre."
+    />
+    <link rel="canonical" href="https://scolup.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Scolup" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content="https://scolup.com/" />
+    <meta
+      property="og:title"
+      content="Scolup — L'application alternative à EcoleDirecte"
+    />
+    <meta
+      property="og:description"
+      content="Notes, moyennes, devoirs, emploi du temps et messages EcoleDirecte dans une interface moderne. Gratuit et open-source."
+    />
+    <meta property="og:image" content="https://scolup.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Scolup, l'application alternative à EcoleDirecte"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Scolup — L'application alternative à EcoleDirecte"
+    />
+    <meta
+      name="twitter:description"
+      content="Notes, moyennes, devoirs, emploi du temps et messages EcoleDirecte dans une interface moderne. Gratuit et open-source."
+    />
+    <meta name="twitter:image" content="https://scolup.com/og-image.png" />
+
+    <!-- Structured data: tells Google that "Scolup" is this brand/app -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://scolup.com/#organization",
+            "name": "Scolup",
+            "url": "https://scolup.com/",
+            "logo": "https://scolup.com/logos/logo.svg",
+            "email": "hi@scolup.com",
+            "sameAs": [
+              "https://github.com/Scolup/Scolup",
+              "https://whatsapp.com/channel/0029Vb9hIrJ2Jl8Fr6S95E2h"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://scolup.com/#website",
+            "url": "https://scolup.com/",
+            "name": "Scolup",
+            "alternateName": ["Scolup.com", "Scolup app"],
+            "inLanguage": "fr-FR",
+            "publisher": { "@id": "https://scolup.com/#organization" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://scolup.com/#app",
+            "name": "Scolup",
+            "url": "https://app.scolup.com/",
+            "description": "Client alternatif open-source pour EcoleDirecte : notes, moyennes, devoirs, emploi du temps et messages.",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "fr-FR",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+            "publisher": { "@id": "https://scolup.com/#organization" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <h1>Scolup — L'application alternative à EcoleDirecte</h1>
+      <p>
+        Scolup est un client alternatif gratuit et open-source pour
+        EcoleDirecte : notes, moyennes, devoirs, emploi du temps et messages
+        dans une interface moderne avec mode sombre.
+      </p>
+      <p><a href="https://app.scolup.com">Ouvrir Scolup</a></p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
