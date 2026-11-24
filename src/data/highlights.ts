@@ -15,8 +15,8 @@ export const HIGHLIGHTS = [
       "Salles, profs, changements. Lisible d'un coup d'œil, même sur mobile.",
   },
   {
-    title: "Rapide et sombre",
+    title: "Quêtes & rubis",
     description:
-      "Mode sombre natif, pages instantanées. Pensé pour une utilisation quotidienne.",
+      "Finis des quêtes en faisant tes devoirs et évaluations, et récupère des rubis en récompense.",
   },
 ] as const

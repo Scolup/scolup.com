@@ -42,13 +42,13 @@ export function HeroSection({
         className="animate-rise font-heading text-5xl font-semibold tracking-tight text-balance sm:text-6xl"
         style={{ animationDelay: "60ms" }}
       >
-        😎 Scolup, l&apos;application alternative à EcoleDirecte.
+        👾 Scolup : gamifie ta scolarité.
       </h1>
       <p
         className="animate-rise text-base text-balance text-muted-foreground sm:text-lg"
         style={{ animationDelay: "140ms" }}
       >
-        Notes, moyennes, devoirs, emploi du temps et messages : ton compte EcoleDirecte dans une interface moderne, gratuite et open-source.
+        Un compagnon scolaire qui transforme ta vie scolaire en jeu.
       </p>
       <div
         className="animate-rise flex flex-col items-center gap-3 sm:flex-row"

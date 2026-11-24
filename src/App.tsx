@@ -11,7 +11,6 @@ import {
 
 import {
   AboutSection,
-  ComparisonSection,
   CTASection,
   FAQSection,
   FeaturesSection,
@@ -66,14 +65,13 @@ export function App() {
           onEnableDirect={handleEnableDirect}
           onDisableDirect={handleDisableDirect}
         />
-        <ComparisonSection />
+        <HowItWorksSection />
+        <FAQSection />
         <AboutSection />
         <FeaturesSection />
         <ScreenshotsSection />
-        <HowItWorksSection />
         <SecuritySection />
         <OpenSourceSection />
-        <FAQSection />
         <CTASection
           goAppDirect={goAppDirect}
           onEnableDirect={handleEnableDirect}

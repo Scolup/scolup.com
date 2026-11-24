@@ -10,13 +10,11 @@ export function AboutSection() {
       </h2>
       <p className="text-center text-sm text-balance text-muted-foreground">
         <strong>Scolup</strong> est un{" "}
-        <strong>client alternatif pour EcoleDirecte</strong> : un meilleur
+        <strong>compagnon scolaire</strong> : un meilleur
         moyen de gérer ta vie scolaire.
         <br />
-        On a pris EcoleDirecte, on l&apos;a rendu plus beau, et on a ajouté de
-        nouvelles fonctionnalités. C&apos;est un client alternatif : il va
-        demander tes données à EcoleDirecte, et les afficher dans une interface
-        plus moderne.
+        Il te permet de consulter tes données scolaires comme
+        dans un jeu, ce qui t'encourage à plus t'engager.
         <br />
         C&apos;est <strong>sécurisé</strong> et <strong>open-source</strong>{" "}
         selon la définition de l&apos;

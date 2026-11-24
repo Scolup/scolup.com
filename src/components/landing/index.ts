@@ -1,6 +1,4 @@
 export { AboutSection } from "./AboutSection"
-export { AvailabilityIcon } from "./AvailabilityIcon"
-export { ComparisonSection } from "./ComparisonSection"
 export { CTASection } from "./CTASection"
 export { FAQSection } from "./FAQSection"
 export { FeaturesSection } from "./FeaturesSection"

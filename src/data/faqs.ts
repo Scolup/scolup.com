@@ -2,7 +2,7 @@ export const FAQS = [
   {
     question: "Qu'est-ce que Scolup ?",
     answer:
-      "Scolup est une application web gratuite et open-source qui sert de client alternatif à EcoleDirecte : tu y retrouves tes notes, moyennes, devoirs, emploi du temps et messages dans une interface moderne.",
+      "Scolup est une application web gratuite et open-source qui transforme tes données EcoleDirecte en jeu : tu y retrouves tes notes, moyennes, devoirs, emploi du temps et messages dans un monde avec quêtes et personnages.",
   },
   {
     question: "Scolup est-il une application officielle d'EcoleDirecte ?",
@@ -21,7 +21,7 @@ export const FAQS = [
   {
     question: "Dois-je créer un nouveau compte ?",
     answer:
-      "Non. Tu te connectes avec ton compte EcoleDirecte existant, Scolup affiche tes données dans une meilleure interface.",
+      "Non. Tu te connectes avec ton compte EcoleDirecte existant, Scolup affiche simplement tes données.",
   },
   {
     question: "Mes données sont-elles en sécurité ?",
@@ -31,7 +31,7 @@ export const FAQS = [
   {
     question: "Scolup remplace-t-il EcoleDirecte ?",
     answer:
-      "Non. Ton établissement garde EcoleDirecte comme source officielle. Scolup est juste une meilleure façon de le consulter au quotidien.",
+      "Non. Ton établissement garde EcoleDirecte comme source officielle. Scolup est juste une extension, un compagnon.",
   },
   {
     question:

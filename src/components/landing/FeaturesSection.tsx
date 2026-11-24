@@ -10,7 +10,7 @@ export function FeaturesSection() {
       aria-label="Fonctionnalités"
     >
       <h2 className="text-center font-heading text-xl font-semibold tracking-tight">
-        Tout ce que tu utilises, en mieux
+        Scolup en fonctionnalités
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
         {HIGHLIGHTS.map((highlight) => (
