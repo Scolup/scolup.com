@@ -1,20 +1,17 @@
 export const STEPS = [
   {
-    index: "01",
-    title: "Connecte-toi",
+    title: "Ouvre Scolup",
     description:
-      "Connecte-toi avec ton compte EcoleDirecte. Tes identifiants ne transitent que pour récupérer tes données.",
+      "L’app s’ouvre dans ton navigateur, sur téléphone, tablette ou ordinateur.",
   },
   {
-    index: "02",
-    title: "Retrouve tout",
+    title: "Connecte ton compte",
     description:
-      "Notes, devoirs, emploi du temps, messages : tout est là.",
+      "Utilise les identifiants EcoleDirecte fournis par ton établissement.",
   },
   {
-    index: "03",
-    title: "Profite",
+    title: "Retrouve ta journée",
     description:
-      "Commence à terminer des quêtes et à récupérer des rubis.",
+      "Tes cours, tes devoirs et tes notes sont réunis dans ton espace.",
   },
 ] as const

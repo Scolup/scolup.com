@@ -1,29 +1,32 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { HugeiconsIcon } from "@hugeicons/react"
+
 import { HIGHLIGHTS } from "@/data/highlights"
 
 export function FeaturesSection() {
   return (
     <section
       id="fonctionnalites"
-      className="animate-rise flex scroll-mt-24 flex-col gap-6"
-      style={{ animationDelay: "310ms" }}
-      aria-label="Fonctionnalités"
+      tabIndex={-1}
+      className="landing-container landing-section"
+      aria-labelledby="features-title"
     >
-      <h2 className="text-center font-heading text-xl font-semibold tracking-tight">
-        Scolup en fonctionnalités
-      </h2>
-      <div className="grid gap-4 sm:grid-cols-2">
-        {HIGHLIGHTS.map((highlight) => (
-          <Card key={highlight.title}>
-            <CardHeader>
-              <CardTitle>{highlight.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground">
-              {highlight.description}
-            </CardContent>
-          </Card>
-        ))}
+      <div className="landing-section-heading landing-section-heading--center">
+        <h2 id="features-title">Tout ton quotidien scolaire.</h2>
+        <p>
+          De ton premier cours au dernier devoir, tout est à portée de main.
+        </p>
       </div>
+      <ul className="landing-features">
+        {HIGHLIGHTS.map(({ id, label, description, icon }) => (
+          <li key={id} id={id}>
+            <HugeiconsIcon icon={icon} size={28} aria-hidden="true" />
+            <div>
+              <h3>{label}</h3>
+              <p>{description}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }

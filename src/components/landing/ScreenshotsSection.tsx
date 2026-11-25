@@ -1,90 +1,93 @@
-import { useEffect, useState } from "react"
+import { useId, useRef, useState } from "react"
+import { Tabs } from "@base-ui/react/tabs"
+import { Cancel01Icon, Maximize01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel"
 import { SCREENSHOTS } from "@/data/screenshots"
-import { cn } from "@/lib/utils"
+
+type Screenshot = (typeof SCREENSHOTS)[number]
 
 export function ScreenshotsSection() {
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const dialogTitle = useId()
+  const [expanded, setExpanded] = useState<Screenshot>(SCREENSHOTS[0])
 
-  useEffect(() => {
-    if (!api) return
-
-    const onSelect = () => setCurrent(api.selectedScrollSnap())
-    onSelect()
-    api.on("select", onSelect)
-
-    return () => {
-      api.off("select", onSelect)
-    }
-  }, [api])
+  const openScreenshot = (screenshot: Screenshot) => {
+    setExpanded(screenshot)
+    dialog.current?.showModal()
+  }
 
   return (
     <section
-      className="animate-rise flex flex-col gap-6"
-      style={{ animationDelay: "315ms" }}
-      aria-label="Aperçus de Scolup"
+      id="apercu"
+      tabIndex={-1}
+      className="landing-container landing-section landing-preview"
+      aria-labelledby="preview-title"
     >
-      <h2 className="text-center font-heading text-xl font-semibold tracking-tight">
-        Scolup en images
-      </h2>
-      <Carousel
-        setApi={setApi}
-        opts={{ align: "center", loop: true }}
-        className="mx-auto w-full max-w-xs"
-      >
-        <CarouselContent>
-          {SCREENSHOTS.map((screenshot) => (
-            <CarouselItem key={screenshot.src}>
-              <figure className="flex flex-col items-center gap-3 px-2">
-                <img
-                  src={screenshot.src}
-                  alt={screenshot.alt}
-                  width={1206}
-                  height={2622}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-auto w-full rounded-lg border bg-card object-cover shadow-sm"
-                />
-                <figcaption className="text-center text-sm font-medium text-muted-foreground">
-                  {screenshot.label}
-                </figcaption>
-              </figure>
-            </CarouselItem>
+      <header className="landing-section-heading">
+        <h2 id="preview-title">Un coup d’œil dans l’app.</h2>
+      </header>
+      <Tabs.Root defaultValue={SCREENSHOTS[0].src}>
+        <Tabs.List
+          className="landing-preview__tabs"
+          aria-label="Écrans de Scolup"
+        >
+          {SCREENSHOTS.map(({ src, label }) => (
+            <Tabs.Tab key={src} value={src}>
+              {label}
+            </Tabs.Tab>
           ))}
-        </CarouselContent>
-        <CarouselPrevious
-          aria-label="Capture précédente"
-          className="hidden sm:inline-flex"
-        />
-        <CarouselNext
-          aria-label="Capture suivante"
-          className="hidden sm:inline-flex"
-        />
-      </Carousel>
-      <div className="flex items-center justify-center gap-2">
-        {SCREENSHOTS.map((screenshot, index) => (
-          <button
+        </Tabs.List>
+        {SCREENSHOTS.map((screenshot) => (
+          <Tabs.Panel
             key={screenshot.src}
-            type="button"
-            aria-label={`Voir la capture ${screenshot.label}`}
-            aria-current={index === current}
-            onClick={() => api?.scrollTo(index)}
-            className={cn(
-              "size-2 rounded-full bg-muted-foreground/30 transition-colors",
-              index === current && "bg-foreground"
-            )}
-          />
+            value={screenshot.src}
+            className="landing-preview__panel"
+          >
+            <div className="landing-preview__copy">
+              <h3>{screenshot.title}</h3>
+              <p>{screenshot.description}</p>
+            </div>
+            <button
+              type="button"
+              className="landing-preview__media"
+              aria-haspopup="dialog"
+              aria-label={`Agrandir la capture ${screenshot.label}`}
+              onClick={() => openScreenshot(screenshot)}
+            >
+              <img
+                src={screenshot.src}
+                alt=""
+                width={1206}
+                height={2622}
+                loading="lazy"
+              />
+              <span className="landing-preview__zoom" aria-hidden="true">
+                <HugeiconsIcon icon={Maximize01Icon} size={18} />
+              </span>
+            </button>
+          </Tabs.Panel>
         ))}
-      </div>
+      </Tabs.Root>
+      <dialog
+        ref={dialog}
+        className="landing-lightbox"
+        aria-labelledby={dialogTitle}
+      >
+        <h3 id={dialogTitle}>{expanded.label} dans Scolup</h3>
+        <form method="dialog">
+          <button type="submit" aria-label="Fermer l’aperçu">
+            <HugeiconsIcon icon={Cancel01Icon} size={22} aria-hidden="true" />
+          </button>
+        </form>
+        <img
+          src={expanded.src}
+          alt={expanded.alt}
+          width={1206}
+          height={2622}
+          loading="lazy"
+        />
+      </dialog>
     </section>
   )
 }

@@ -1,4 +1,13 @@
 import {
+  CheckmarkCircle02Icon,
+  HelpCircleIcon,
+  Login01Icon,
+  Shield01Icon,
+  SmartPhone01Icon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -6,21 +15,39 @@ import {
 } from "@/components/ui/accordion"
 import { FAQS } from "@/data/faqs"
 
+const icons = [
+  HelpCircleIcon,
+  Shield01Icon,
+  SmartPhone01Icon,
+  CheckmarkCircle02Icon,
+  Login01Icon,
+  Shield01Icon,
+]
+
 export function FAQSection() {
   return (
     <section
-      className="animate-rise flex flex-col gap-6"
-      style={{ animationDelay: "360ms" }}
-      aria-label="Questions fréquentes"
+      id="faq"
+      className="landing-container landing-section landing-faq"
+      aria-labelledby="faq-title"
     >
-      <h2 className="text-center font-heading text-xl font-semibold tracking-tight">
-        Questions fréquentes
-      </h2>
-      <Accordion>
-        {FAQS.map((faq) => (
-          <AccordionItem key={faq.question} value={faq.question}>
-            <AccordionTrigger>{faq.question}</AccordionTrigger>
-            <AccordionContent>{faq.answer}</AccordionContent>
+      <header className="landing-section-heading">
+        <h2 id="faq-title">Questions fréquentes.</h2>
+      </header>
+      <Accordion className="landing-faq__list">
+        {FAQS.map(({ question, answer }, index) => (
+          <AccordionItem key={question} value={question}>
+            <AccordionTrigger>
+              <span className="landing-faq__question">
+                <HugeiconsIcon
+                  icon={icons[index]}
+                  size={20}
+                  aria-hidden="true"
+                />
+                {question}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>{answer}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

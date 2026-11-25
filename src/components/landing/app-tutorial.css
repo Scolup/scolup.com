@@ -1,0 +1,498 @@
+.landing.app-tutorial {
+  background: radial-gradient(ellipse at 72% 42%, #292929, transparent 62%)
+    #101010 fixed;
+  color: #f5f5f5;
+}
+
+.app-tutorial .landing-skip {
+  color: #111;
+}
+
+.landing.app-tutorial #contenu {
+  margin-top: 0;
+}
+
+.app-tutorial__track {
+  min-height: calc(100dvh - var(--header-height) + 165svh);
+}
+
+.app-tutorial__stage {
+  position: sticky;
+  top: var(--header-height);
+  display: grid;
+  align-items: center;
+  min-height: calc(100dvh - var(--header-height));
+  padding-block: 1rem;
+}
+
+.app-tutorial__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  grid-template-rows: 1fr 1fr;
+  align-items: start;
+  column-gap: clamp(2rem, 6vw, 6rem);
+  row-gap: 2rem;
+}
+
+.app-tutorial h1 {
+  align-self: end;
+  max-width: 11ch;
+  color: #fff;
+  font: 750 clamp(2.9rem, 6vw, 5.8rem) / 0.95 var(--display);
+  letter-spacing: -0.07em;
+}
+
+.app-tutorial h1 em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.08em;
+}
+
+.app-tutorial__instructions {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 29rem;
+}
+
+.app-tutorial__steps {
+  display: grid;
+}
+
+.app-tutorial__step {
+  grid-area: 1 / 1;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  min-height: 8rem;
+  color: #c9c9c9;
+  line-height: 1.5;
+  visibility: hidden;
+}
+
+.app-tutorial__step[data-current] {
+  visibility: visible;
+  animation: tutorial-copy-in 300ms ease both;
+}
+
+.app-tutorial__position,
+.app-tutorial__hint {
+  color: #aaa;
+  font-size: 0.875rem;
+}
+
+.app-tutorial__position {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-tutorial__step h2 {
+  color: #fff;
+  font: 710 clamp(1.35rem, 3vw, 2rem) / 1.08 var(--display);
+  letter-spacing: -0.03em;
+}
+
+.app-tutorial__controls,
+.app-tutorial__controls button,
+.app-tutorial__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-tutorial__controls button {
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  border: 1px solid #4c4c4c;
+  border-radius: 100vw;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.app-tutorial__controls button:hover:not(:disabled) {
+  background: #2d2d2d;
+}
+
+.app-tutorial__controls button:disabled {
+  opacity: 0.45;
+}
+
+.app-tutorial__hint,
+.app-tutorial__open {
+  min-height: 1.5rem;
+}
+
+.app-tutorial__open {
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.24em;
+}
+
+.app-tutorial-phone {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  place-self: center;
+  height: min(67svh, 39rem);
+  max-width: 100%;
+  aspect-ratio: 861 / 1827;
+  filter: drop-shadow(0 1.6rem 2.2rem #0009);
+}
+
+.app-tutorial-phone__frame {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.app-tutorial-phone__screen {
+  position: absolute;
+  inset: 2.3% 4.9% 2.4%;
+  overflow: hidden;
+  border-radius: 15% / 6.8%;
+  container-type: inline-size;
+  font-family: -apple-system, BlinkMacSystemFont, "Geist Variable", sans-serif;
+  line-height: 1.25;
+}
+
+.tutorial-safari,
+.tutorial-sheet,
+.tutorial-home {
+  position: absolute;
+  inset: auto 0 0;
+  transition:
+    opacity 260ms ease,
+    translate 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tutorial-safari,
+.tutorial-sheet,
+.tutorial-home {
+  font-size: clamp(8px, 5.5cqi, 16px);
+}
+
+.tutorial-safari {
+  padding: 0.48em 0.6em 1.3em;
+  border-top: 1px solid #ffffff24;
+  background: #1c1c1eea;
+  backdrop-filter: blur(12px);
+  color: #eee;
+}
+
+.tutorial-safari__address,
+.tutorial-safari__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.tutorial-safari__address {
+  justify-content: space-between;
+  min-height: 2em;
+  padding-inline: 0.75em;
+  border-radius: 0.85em;
+  background: #ffffff21;
+}
+
+.tutorial-safari__reader {
+  font-size: 0.88em;
+}
+
+.app-tutorial-phone__screen svg {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+}
+
+.tutorial-safari__toolbar {
+  padding-top: 0.7em;
+  color: #69acff;
+}
+
+.tutorial-safari__inactive {
+  color: #787880;
+}
+
+.tutorial-tap {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 0.6em;
+}
+
+.tutorial-tap::after {
+  position: absolute;
+  inset: -0.24em;
+  border: 1px solid currentColor;
+  border-radius: inherit;
+  opacity: 0;
+  content: "";
+}
+
+[data-step="0"] [data-tap="share"]::after,
+[data-step="1"] [data-tap="action"]::after,
+[data-step="2"] [data-tap="add"]::after,
+[data-step="3"] [data-tap="home"]::after {
+  opacity: 0.8;
+  animation: tutorial-tap 1.9s ease-out 2;
+}
+
+.tutorial-sheet {
+  display: grid;
+  gap: 0.8em;
+  padding: 0.55em 0.75em 1.6em;
+  border: 1px solid #ffffff2b;
+  border-radius: 1.6em 1.6em 0 0;
+  background: #252527f5;
+  backdrop-filter: blur(16px);
+  color: #fff;
+  opacity: 0;
+  translate: 0 100%;
+}
+
+[data-step="1"] .tutorial-sheet--share,
+[data-step="2"] .tutorial-sheet--confirm {
+  opacity: 1;
+  translate: 0;
+}
+
+[data-step="1"] .tutorial-safari,
+[data-step="2"] .tutorial-safari {
+  opacity: 0.25;
+}
+
+.tutorial-sheet--confirm {
+  align-content: start;
+}
+
+.tutorial-sheet__heading {
+  text-align: center;
+  font-size: 0.89em;
+}
+
+.tutorial-sheet__heading > span {
+  color: #79b3ff;
+}
+
+.tutorial-sheet__actions {
+  display: grid;
+  border-radius: 0.7em;
+  background: #ffffff13;
+}
+
+.tutorial-sheet__actions > div + div {
+  border-top: 1px solid #ffffff22;
+}
+
+.tutorial-sheet__grabber {
+  justify-self: center;
+  width: 2.5em;
+  height: 0.22em;
+  border-radius: 2em;
+  background: #ffffff55;
+}
+
+.tutorial-sheet__site,
+.tutorial-sheet__action,
+.tutorial-sheet__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.tutorial-sheet__site {
+  padding: 0.65em;
+  border-radius: 0.8em;
+  background: #ffffff13;
+}
+
+.tutorial-sheet__site img,
+.tutorial-home__app img {
+  width: 2.6em;
+  height: 2.6em;
+  border-radius: 0.65em;
+}
+
+.tutorial-sheet__site small {
+  display: block;
+  color: #bbb;
+  font-size: 0.85em;
+}
+
+.tutorial-sheet__action,
+.tutorial-sheet__heading {
+  justify-content: space-between;
+  min-height: 2.35em;
+}
+
+.tutorial-sheet__action {
+  padding: 0.35em 0.5em;
+  background: #ffffff19;
+  border-radius: 0.65em;
+}
+
+.tutorial-sheet__actions .tutorial-sheet__action {
+  background: transparent;
+  border-radius: 0;
+}
+
+.tutorial-sheet__switch {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  width: 2.2em;
+  padding: 0.13em;
+  border-radius: 2em;
+  background: #38c965;
+}
+
+.tutorial-sheet__switch::after {
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: 50%;
+  background: #fff;
+  content: "";
+}
+
+.tutorial-home {
+  inset: 6.5% 0 0;
+  display: grid;
+  align-content: space-between;
+  padding: 2em 1.2em 1.4em;
+  background:
+    radial-gradient(ellipse at 78% 28%, #596578 0%, transparent 52%),
+    radial-gradient(ellipse at 12% 78%, #4b494e, transparent 62%), #151c25;
+  opacity: 0;
+  scale: 1.06;
+  transition:
+    opacity 320ms ease,
+    scale 380ms ease;
+}
+
+[data-step="3"] .tutorial-home {
+  opacity: 1;
+  scale: 1;
+}
+
+.tutorial-home__app {
+  display: grid;
+  justify-items: center;
+  justify-self: start;
+  gap: 0.6em;
+  font-size: 0.9em;
+  text-shadow: 0 1px 3px #000;
+}
+
+.tutorial-home__app img {
+  width: 3.4em;
+  height: 3.4em;
+}
+
+.tutorial-home__dock {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 3.5em;
+  border-radius: 1.4em;
+  background: #ffffff24;
+}
+
+.tutorial-home__dock span {
+  display: grid;
+  place-items: center;
+  width: 2.3em;
+  aspect-ratio: 1;
+  border-radius: 0.65em;
+  color: #eceff5;
+  background: #191d24;
+}
+
+.tutorial-home-indicator {
+  position: absolute;
+  inset: auto 32% 0.85%;
+  height: 0.28%;
+  min-height: 2px;
+  border-radius: 99px;
+  background: #fafafa;
+}
+
+@keyframes tutorial-copy-in {
+  from {
+    opacity: 0;
+    translate: 0 0.4rem;
+  }
+}
+
+@keyframes tutorial-tap {
+  0%,
+  100% {
+    opacity: 0.8;
+    scale: 1;
+  }
+  45% {
+    opacity: 0.25;
+    scale: 1.1;
+  }
+}
+
+@media (max-width: 44rem) {
+  .app-tutorial__layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    justify-items: center;
+    gap: 0.9rem;
+    text-align: center;
+  }
+
+  .app-tutorial h1 {
+    max-width: 17ch;
+    font-size: clamp(2.1rem, 8vw, 3.7rem);
+  }
+
+  .app-tutorial-phone {
+    grid-column: 1;
+    grid-row: 2;
+    height: clamp(10rem, 38svh, 21rem);
+  }
+
+  .app-tutorial__instructions {
+    justify-items: center;
+    gap: 0.5rem;
+  }
+
+  .app-tutorial__step {
+    min-height: 6.7rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-height: 38rem) and (max-width: 44rem) {
+  .app-tutorial__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.65fr);
+    text-align: left;
+    column-gap: 0.6rem;
+  }
+
+  .app-tutorial-phone {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    height: min(55svh, 15rem);
+  }
+
+  .app-tutorial__instructions,
+  .app-tutorial h1 {
+    justify-self: start;
+  }
+
+  .app-tutorial__instructions {
+    justify-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-tutorial *,
+  .app-tutorial *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

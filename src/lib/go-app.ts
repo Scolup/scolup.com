@@ -2,10 +2,8 @@ export const APP_URL = "https://app.scolup.com"
 
 const COOKIE_NAME = "scolup_go_app"
 const STORAGE_KEY = "scolup:go-app"
-const OPEN_COUNT_COOKIE = "scolup_open_count"
-const OPEN_COUNT_STORAGE_KEY = "scolup:open-count"
-/** First N opens go straight to the app, popover shows afterwards. */
-export const OPEN_POPUP_THRESHOLD = 2
+const OPEN_COUNT_COOKIE = "scolup_browser_open_count"
+const OPEN_COUNT_STORAGE_KEY = "scolup:browser-open-count"
 const COOKIE_DOMAIN = ".scolup.com"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 
@@ -105,12 +103,6 @@ export function incrementOpenCount(): number {
   }
 
   return next
-}
-
-/** Popover only shows after the first N direct opens. */
-export function shouldShowAppPopover(): boolean {
-  if (!canUseDOM()) return false
-  return getOpenCount() >= OPEN_POPUP_THRESHOLD
 }
 
 function getCookie(name: string): string | null {

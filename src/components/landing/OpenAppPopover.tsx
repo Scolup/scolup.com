@@ -1,56 +1,54 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
-
-import { Button } from "@/components/ui/button"
 import {
-  PopoverContent,
-  PopoverHeader,
-  PopoverTitle,
-} from "@/components/ui/popover"
-import { APP_URL } from "@/lib/go-app"
+  ArrowUpRight01Icon,
+  GithubIcon,
+  Globe02Icon,
+  SmartPhone01Icon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import type { MouseEventHandler } from "react"
 
-type OpenAppPopoverProps = {
-  goAppDirect: boolean
-  onOpenOnce: () => void
-  onEnableDirect: () => void
-  onDisableDirect: () => void
-}
+import { PopoverContent, PopoverTitle } from "@/components/ui/popover"
+import { APP_URL } from "@/lib/go-app"
+import { APP_TUTORIAL_PATH } from "@/lib/links"
 
 export function OpenAppPopover({
-  goAppDirect,
-  onOpenOnce,
-  onEnableDirect,
-  onDisableDirect,
-}: OpenAppPopoverProps) {
+  onBrowserOpen,
+}: {
+  onBrowserOpen: MouseEventHandler<HTMLAnchorElement>
+}) {
   return (
-    <PopoverContent align="center" className="w-80">
-      <PopoverHeader>
-        <PopoverTitle>Marre de cliquer ici à chaque fois ?</PopoverTitle>
-      </PopoverHeader>
-      <div className="flex flex-col gap-2">
-        <Button
-          type="button"
-          onClick={onOpenOnce}
-          size="sm"
-          variant="outline"
-          render={<a href={APP_URL} aria-label="Ouvrir Scolup maintenant" />}
-        >
-          Ouvrir une fois
+    <PopoverContent
+      align="end"
+      side="bottom"
+      sideOffset={10}
+      className="landing-launcher-menu"
+    >
+      <PopoverTitle className="sr-only">
+        Options d’ouverture de Scolup
+      </PopoverTitle>
+      <div className="landing-launcher-menu__choices">
+        <a href={APP_URL} onClick={onBrowserOpen}>
+          <HugeiconsIcon icon={Globe02Icon} size={19} aria-hidden="true" />
+          Ouvrir sur le navigateur
           <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            data-icon="inline-end"
-            className="transition-transform duration-150 group-hover/button:translate-x-1"
+            icon={ArrowUpRight01Icon}
+            size={16}
+            aria-hidden="true"
           />
-        </Button>
-        {goAppDirect ? (
-          <Button type="button" onClick={onDisableDirect}>
-            Ne plus ouvrir automatiquement
-          </Button>
-        ) : (
-          <Button type="button" onClick={onEnableDirect}>
-            Toujours ouvrir directement
-          </Button>
-        )}
+        </a>
+        <a href="/github">
+          <HugeiconsIcon icon={GithubIcon} size={19} aria-hidden="true" />
+          GitHub
+          <HugeiconsIcon
+            icon={ArrowUpRight01Icon}
+            size={16}
+            aria-hidden="true"
+          />
+        </a>
+        <a href={APP_TUTORIAL_PATH} className="landing-launcher-menu__tutorial">
+          <HugeiconsIcon icon={SmartPhone01Icon} size={19} aria-hidden="true" />
+          Ajouter à l’écran d’accueil
+        </a>
       </div>
     </PopoverContent>
   )
