@@ -8,26 +8,15 @@ import { TeamAvatar } from "./TeamAvatar"
 export function AboutSection() {
   return (
     <section className="landing-vision" aria-labelledby="vision-title">
-      <div>
-        <h2 id="vision-title">L'outil scolaire qui en vaut la peine.</h2>
+      <div className="landing-vision__intro">
+        <h2 id="vision-title">Par des étudiants, pour des étudiants.</h2>
         <p>
-          Scolup a été créé par des étudiants pour des étudiants. Nous avons conçu cet outil afin d'apporter une solution simple et efficace aux problèmes rencontrés dans le quotidien scolaire.
+          On a créé Scolup pour simplifier notre propre quotidien scolaire.
+          Aujourd’hui, on continue de l’améliorer à partir des besoins qu’on
+          rencontre en classe et à la maison.
         </p>
-      </div>
-      <div>
-        <h3>Derrière Scolup</h3>
-        <ul className="landing-vision__team" aria-label="L’équipe Scolup">
-          {TEAM.map(({ name }) => (
-            <li key={name}>
-              <a href={`https://github.com/${name}`}>
-                <TeamAvatar name={name} />
-                {name}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a href={TEAM_PATH}>
-          Qui sommes-nous ?
+        <a className="landing-vision__about-link" href={TEAM_PATH}>
+          Rencontrer l’équipe
           <HugeiconsIcon
             icon={ArrowUpRight01Icon}
             size={15}
@@ -35,6 +24,19 @@ export function AboutSection() {
           />
         </a>
       </div>
+      <ul className="landing-vision__team" aria-label="L’équipe Scolup">
+        {TEAM.map(({ name }) => (
+          <li key={name}>
+            <a
+              href={`https://github.com/${name}`}
+              aria-label={`GitHub de ${name}`}
+            >
+              <TeamAvatar name={name} />
+              <span>{name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }

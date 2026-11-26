@@ -1,12 +1,8 @@
-import {
-  ArrowDown01Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
-} from "@hugeicons/core-free-icons"
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
-import { APP_URL } from "@/lib/go-app"
+import { PAGE_TITLES } from "@/lib/links"
 
 import { Header } from "./Header"
 import "./app-tutorial.css"
@@ -62,6 +58,14 @@ function SafariSymbol({ name }: { name: keyof typeof safariSymbols }) {
 }
 
 const APP_ICON = "/logos/safari-app-icon.png"
+
+const COMMONS_ASSETS = "https://upload.wikimedia.org/wikipedia/commons"
+const homeDock = [
+  { app: "messages", file: "8/85/IMessage_icon.png" },
+  { app: "music", file: "5/59/Apple_Music_Icon.svg" },
+  { app: "phone", file: "7/7e/Phone_iOS.png" },
+  { app: "contacts", file: "d/d5/Contacts_%28iOS%29.png" },
+]
 
 function TutorialPhone({ step }: { step: number }) {
   return (
@@ -141,6 +145,13 @@ function TutorialPhone({ step }: { step: number }) {
         </div>
 
         <div className="tutorial-home">
+          <img
+            className="tutorial-home__status"
+            src="/screenshots/iphone-status.png"
+            width={777}
+            height={108}
+            alt=""
+          />
           <div className="tutorial-home__app">
             <span className="tutorial-tap" data-tap="home">
               <img src={APP_ICON} alt="" />
@@ -148,15 +159,17 @@ function TutorialPhone({ step }: { step: number }) {
             <b>Scolup</b>
           </div>
           <div className="tutorial-home__dock">
-            <span>
-              <SafariSymbol name="book" />
-            </span>
-            <span>
-              <SafariSymbol name="tabs" />
-            </span>
-            <span>
-              <SafariSymbol name="share" />
-            </span>
+            {homeDock.map(({ app, file }) => (
+              <img
+                key={app}
+                data-app={app}
+                src={`${COMMONS_ASSETS}/${file}`}
+                width={64}
+                height={64}
+                alt=""
+                referrerPolicy="no-referrer"
+              />
+            ))}
           </div>
         </div>
         <div className="tutorial-home-indicator" />
@@ -166,53 +179,15 @@ function TutorialPhone({ step }: { step: number }) {
 }
 
 export function AppTutorial() {
-  const trackRef = useRef<HTMLElement>(null)
-  const stageRef = useRef<HTMLDivElement>(null)
   const [activeStep, setActiveStep] = useState(0)
+  const lastStep = steps.length - 1
 
   useEffect(() => {
-    document.title = "Ajouter Scolup à l’écran d’accueil · Scolup"
-    const track = trackRef.current
-    const stage = stageRef.current
-    if (!track || !stage) return
-
-    const updateStep = () => {
-      const distance = track.offsetHeight - stage.offsetHeight
-      const pinTop = Number.parseFloat(getComputedStyle(stage).top)
-      const progress = (pinTop - track.getBoundingClientRect().top) / distance
-      const index = Math.round(progress * (steps.length - 1))
-      setActiveStep(Math.min(steps.length - 1, Math.max(0, index)))
-    }
-
-    const observer = new ResizeObserver(updateStep)
-    observer.observe(track)
-    observer.observe(stage)
-    window.addEventListener("scroll", updateStep, { passive: true })
-    updateStep()
-
-    return () => {
-      observer.disconnect()
-      window.removeEventListener("scroll", updateStep)
-    }
+    document.title = PAGE_TITLES.tutorial
   }, [])
 
-  const goToStep = (index: number) => {
-    const track = trackRef.current
-    const stage = stageRef.current
-    if (!track || !stage) return
-
-    const pinTop = Number.parseFloat(getComputedStyle(stage).top)
-    const start = window.scrollY + track.getBoundingClientRect().top - pinTop
-    const distance = track.offsetHeight - stage.offsetHeight
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches
-
-    window.scrollTo({
-      top: start + (distance * index) / (steps.length - 1),
-      behavior: reducedMotion ? "instant" : "smooth",
-    })
-    if (reducedMotion) setActiveStep(index)
+  const changeStep = (direction: number) => {
+    setActiveStep((step) => Math.max(0, Math.min(lastStep, step + direction)))
   }
 
   return (
@@ -220,83 +195,62 @@ export function AppTutorial() {
       <a className="landing-skip" href="#contenu">
         Aller au tuto
       </a>
-      <Header homeHref="/?landing=1" variant="tutorial" />
+      <Header homeHref="/?landing=1" variant="project" />
       <main id="contenu" tabIndex={-1}>
         <section
-          className="app-tutorial__track"
-          ref={trackRef}
+          className="app-tutorial__stage"
           aria-labelledby="app-tutorial-title"
         >
-          <div className="app-tutorial__stage" ref={stageRef}>
-            <div className="app-tutorial__layout landing-container">
-              <h1 id="app-tutorial-title">
-                Scolup sur ton <em>écran d’accueil.</em>
-              </h1>
-              <TutorialPhone step={activeStep} />
-              <div className="app-tutorial__instructions">
-                <div className="app-tutorial__steps" aria-live="polite">
-                  {steps.map((step, index) => (
-                    <div
-                      className="app-tutorial__step"
-                      key={step.title}
-                      data-current={index === activeStep || undefined}
-                      aria-hidden={index !== activeStep}
-                    >
-                      <p className="app-tutorial__position">
-                        Étape {index + 1} sur {steps.length}
-                      </p>
-                      <h2>{step.title}</h2>
-                      <p>{step.description}</p>
-                    </div>
-                  ))}
-                </div>
-                <div
-                  className="app-tutorial__controls"
-                  role="group"
-                  aria-label="Navigation du tutoriel"
-                >
-                  <button
-                    type="button"
-                    onClick={() => goToStep(activeStep - 1)}
-                    disabled={activeStep === 0}
-                    aria-label="Étape précédente"
+          <button
+            className="app-tutorial__arrow app-tutorial__arrow--previous"
+            type="button"
+            aria-label="Étape précédente"
+            aria-disabled={activeStep === 0}
+            onClick={() => changeStep(-1)}
+          >
+            <HugeiconsIcon
+              icon={ArrowLeft01Icon}
+              size={30}
+              aria-hidden="true"
+            />
+          </button>
+          <div className="app-tutorial__layout landing-container">
+            <h1 id="app-tutorial-title">
+              Scolup sur ton <em>écran d’accueil.</em>
+            </h1>
+            <TutorialPhone step={activeStep} />
+            <div className="app-tutorial__instructions">
+              <div className="app-tutorial__steps" aria-live="polite">
+                {steps.map((step, index) => (
+                  <div
+                    className="app-tutorial__step"
+                    key={step.title}
+                    data-current={index === activeStep || undefined}
+                    aria-hidden={index !== activeStep}
                   >
-                    <HugeiconsIcon
-                      icon={ArrowLeft01Icon}
-                      size={19}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => goToStep(activeStep + 1)}
-                    disabled={activeStep === steps.length - 1}
-                  >
-                    Étape suivante
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      size={17}
-                      aria-hidden="true"
-                    />
-                  </button>
-                </div>
-                {activeStep < steps.length - 1 ? (
-                  <p className="app-tutorial__hint">
-                    <HugeiconsIcon
-                      icon={ArrowDown01Icon}
-                      size={16}
-                      aria-hidden="true"
-                    />
-                    Défile pour suivre le tuto
-                  </p>
-                ) : (
-                  <a className="app-tutorial__open" href={APP_URL}>
-                    Ouvrir Scolup
-                  </a>
-                )}
+                    <p className="app-tutorial__position">
+                      Étape {index + 1} sur {steps.length}
+                    </p>
+                    <h2>{step.title}</h2>
+                    <p>{step.description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+          <button
+            className="app-tutorial__arrow app-tutorial__arrow--next"
+            type="button"
+            aria-label="Étape suivante"
+            aria-disabled={activeStep === lastStep}
+            onClick={() => changeStep(1)}
+          >
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              size={30}
+              aria-hidden="true"
+            />
+          </button>
         </section>
       </main>
     </div>

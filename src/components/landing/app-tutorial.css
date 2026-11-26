@@ -12,13 +12,9 @@
   margin-top: 0;
 }
 
-.app-tutorial__track {
-  min-height: calc(100dvh - var(--header-height) + 165svh);
-}
-
 .app-tutorial__stage {
-  position: sticky;
-  top: var(--header-height);
+  position: relative;
+  --tutorial-edge-space: clamp(2.6rem, 6vw, 5.5rem);
   display: grid;
   align-items: center;
   min-height: calc(100dvh - var(--header-height));
@@ -32,6 +28,10 @@
   align-items: start;
   column-gap: clamp(2rem, 6vw, 6rem);
   row-gap: 2rem;
+}
+
+.app-tutorial__layout.landing-container {
+  width: min(71rem, 100% - 2 * var(--tutorial-edge-space));
 }
 
 .app-tutorial h1 {
@@ -75,8 +75,7 @@
   animation: tutorial-copy-in 300ms ease both;
 }
 
-.app-tutorial__position,
-.app-tutorial__hint {
+.app-tutorial__position {
   color: #aaa;
   font-size: 0.875rem;
 }
@@ -91,41 +90,40 @@
   letter-spacing: -0.03em;
 }
 
-.app-tutorial__controls,
-.app-tutorial__controls button,
-.app-tutorial__hint {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.app-tutorial__arrow {
+  position: absolute;
+  inset-block-start: 50%;
+  display: grid;
+  place-items: center;
+  width: var(--tutorial-edge-space);
+  height: 3.5rem;
+  translate: 0 -50%;
+  color: #e3e3e3;
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    opacity 200ms ease;
 }
 
-.app-tutorial__controls button {
-  min-height: 2.75rem;
-  padding-inline: 0.75rem;
-  border: 1px solid #4c4c4c;
-  border-radius: 100vw;
+.app-tutorial__arrow--previous {
+  inset-inline-start: 0;
+}
+
+.app-tutorial__arrow--next {
+  inset-inline-end: 0;
+}
+
+.app-tutorial__arrow:hover {
   color: #fff;
-  font-size: 0.875rem;
-  font-weight: 650;
 }
 
-.app-tutorial__controls button:hover:not(:disabled) {
-  background: #2d2d2d;
+.app-tutorial__arrow:focus-visible {
+  outline-offset: -4px;
 }
 
-.app-tutorial__controls button:disabled {
-  opacity: 0.45;
-}
-
-.app-tutorial__hint,
-.app-tutorial__open {
-  min-height: 1.5rem;
-}
-
-.app-tutorial__open {
-  font-weight: 650;
-  text-decoration: underline;
-  text-underline-offset: 0.24em;
+.app-tutorial__arrow[aria-disabled="true"] {
+  opacity: 0.32;
+  cursor: default;
 }
 
 .app-tutorial-phone {
@@ -137,6 +135,7 @@
   max-width: 100%;
   aspect-ratio: 861 / 1827;
   filter: drop-shadow(0 1.6rem 2.2rem #0009);
+  animation: tutorial-phone-in 850ms cubic-bezier(0.22, 0.7, 0.27, 1) 90ms both;
 }
 
 .app-tutorial-phone__frame {
@@ -242,7 +241,7 @@
   gap: 0.8em;
   padding: 0.55em 0.75em 1.6em;
   border: 1px solid #ffffff2b;
-  border-radius: 1.6em 1.6em 0 0;
+  border-radius: 2.15em 2.15em 0 0;
   background: #252527f5;
   backdrop-filter: blur(16px);
   color: #fff;
@@ -276,7 +275,7 @@
 
 .tutorial-sheet__actions {
   display: grid;
-  border-radius: 0.7em;
+  border-radius: 0.9em;
   background: #ffffff13;
 }
 
@@ -306,8 +305,7 @@
   background: #ffffff13;
 }
 
-.tutorial-sheet__site img,
-.tutorial-home__app img {
+.tutorial-sheet__site img {
   width: 2.6em;
   height: 2.6em;
   border-radius: 0.65em;
@@ -333,7 +331,14 @@
 
 .tutorial-sheet__actions .tutorial-sheet__action {
   background: transparent;
-  border-radius: 0;
+}
+
+.tutorial-sheet__actions [data-tap="action"] {
+  border-radius: 0 0 0.9em 0.9em;
+}
+
+.tutorial-sheet__actions [data-tap="action"]::after {
+  inset: 0.05em;
 }
 
 .tutorial-sheet__switch {
@@ -355,56 +360,64 @@
 }
 
 .tutorial-home {
-  inset: 6.5% 0 0;
+  --home-icon-size: 16.5cqi;
+  --home-icon-radius: 23%;
+  inset: 0;
   display: grid;
   align-content: space-between;
-  padding: 2em 1.2em 1.4em;
+  padding: 17cqi 3.5cqi 5.5cqi;
   background:
     radial-gradient(ellipse at 78% 28%, #596578 0%, transparent 52%),
     radial-gradient(ellipse at 12% 78%, #4b494e, transparent 62%), #151c25;
   opacity: 0;
-  scale: 1.06;
-  transition:
-    opacity 320ms ease,
-    scale 380ms ease;
+  transition: opacity 320ms ease;
+}
+
+.tutorial-home__status {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: auto;
 }
 
 [data-step="3"] .tutorial-home {
   opacity: 1;
-  scale: 1;
 }
 
 .tutorial-home__app {
   display: grid;
   justify-items: center;
   justify-self: start;
-  gap: 0.6em;
+  gap: 0.35em;
+  margin-inline-start: 2cqi;
   font-size: 0.9em;
   text-shadow: 0 1px 3px #000;
 }
 
-.tutorial-home__app img {
-  width: 3.4em;
-  height: 3.4em;
+.tutorial-home__app .tutorial-tap,
+.tutorial-home__app img,
+.tutorial-home__dock img {
+  display: block;
+  width: var(--home-icon-size);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: var(--home-icon-radius);
+}
+
+[data-step="3"] [data-tap="home"]::after {
+  inset: 0;
+  border: 0;
+  box-shadow: inset 0 0 0 1px #111a;
+  animation-name: tutorial-home-tap;
 }
 
 .tutorial-home__dock {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 3.5em;
-  border-radius: 1.4em;
+  padding: 3cqi;
+  border-radius: 8cqi;
   background: #ffffff24;
-}
-
-.tutorial-home__dock span {
-  display: grid;
-  place-items: center;
-  width: 2.3em;
-  aspect-ratio: 1;
-  border-radius: 0.65em;
-  color: #eceff5;
-  background: #191d24;
 }
 
 .tutorial-home-indicator {
@@ -423,6 +436,18 @@
   }
 }
 
+@keyframes tutorial-phone-in {
+  from {
+    opacity: 0;
+    transform: translateY(3.5rem) scale(0.84) rotate(-6deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes tutorial-tap {
   0%,
   100% {
@@ -433,6 +458,32 @@
     opacity: 0.25;
     scale: 1.1;
   }
+}
+
+@keyframes tutorial-row-tap {
+  0%,
+  100% {
+    opacity: 0.8;
+    scale: 1;
+  }
+  45% {
+    opacity: 0.25;
+    scale: 1.04;
+  }
+}
+
+@keyframes tutorial-home-tap {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  45% {
+    opacity: 0.12;
+  }
+}
+
+[data-step="1"] [data-tap="action"]::after {
+  animation-name: tutorial-row-tap;
 }
 
 @media (max-width: 44rem) {

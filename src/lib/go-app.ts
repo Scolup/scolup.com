@@ -1,4 +1,6 @@
-export const APP_URL = "https://app.scolup.com"
+import { APP_URL } from "./links"
+
+export { APP_URL }
 
 const COOKIE_NAME = "scolup_go_app"
 const STORAGE_KEY = "scolup:go-app"

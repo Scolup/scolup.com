@@ -19,12 +19,10 @@ import {
   ScreenshotsSection,
 } from "@/components/landing"
 import { AppTutorial } from "@/components/landing/AppTutorial"
-import { LegalPage } from "@/components/landing/LegalPage"
 import { ProjectPage } from "@/components/landing/ProjectPage"
 import {
   APP_TUTORIAL_PATH,
   GITHUB_ORG_URL,
-  LEGAL_LINKS,
   OPEN_SOURCE_PATH,
   TEAM_PATH,
 } from "@/lib/links"
@@ -81,25 +79,26 @@ function LandingPage() {
   )
 }
 
-function GitHubRedirect() {
+function RouteRedirect({ href, label }: { href: string; label: string }) {
   useEffect(() => {
-    window.location.replace(GITHUB_ORG_URL)
-  }, [])
+    window.location.replace(href)
+  }, [href])
 
-  return <a href={GITHUB_ORG_URL}>Ouvrir GitHub</a>
+  return <a href={href}>{label}</a>
 }
 
 export function App() {
   const pathname = window.location.pathname.replace(/\/$/, "")
 
+  if (pathname === APP_TUTORIAL_PATH + "/app") {
+    return <RouteRedirect href={APP_TUTORIAL_PATH} label="Ouvrir le tuto" />
+  }
   if (pathname === APP_TUTORIAL_PATH) return <AppTutorial />
   if (pathname.toLowerCase() === TEAM_PATH) return <ProjectPage page="team" />
   if (pathname.toLowerCase() === OPEN_SOURCE_PATH)
     return <ProjectPage page="source" />
-  if (pathname === "/github") return <GitHubRedirect />
-  const legal = LEGAL_LINKS.find(({ href }) => href === pathname)
-  if (legal) return <LegalPage document={legal} />
-
+  if (pathname === "/github")
+    return <RouteRedirect href={GITHUB_ORG_URL} label="Ouvrir GitHub" />
   return <LandingPage />
 }
 

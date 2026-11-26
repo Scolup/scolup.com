@@ -24,7 +24,6 @@ const columns = [
       { href: CONTACT_URL, label: "Nous écrire" },
     ],
   },
-  { label: "Informations légales", links: LEGAL_LINKS },
 ]
 
 export function Footer() {
@@ -46,13 +45,32 @@ export function Footer() {
               </ul>
             </nav>
           ))}
+          <div className="landing-footer__legal">
+            <h3>Informations légales</h3>
+            <p>Disponibles à la réouverture de l’app.</p>
+            <ul>
+              {LEGAL_LINKS.map(({ href, label }) => (
+                <li key={href}>
+                  <span role="link" aria-disabled="true">
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <a
           className="landing-footer__brand"
           href="#top"
           aria-label="Scolup, retour en haut"
         >
-          <img src="/logos/logo.svg" width={180} height={180} alt="" />
+          <picture>
+            <source
+              media="(prefers-reduced-motion: reduce)"
+              srcSet="/logos/logo.svg"
+            />
+            <img src="/logos/loader.svg" width={180} height={180} alt="" />
+          </picture>
           <span>Scolup</span>
         </a>
       </div>

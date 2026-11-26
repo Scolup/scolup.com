@@ -8,7 +8,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useEffect } from "react"
 
-import { CONTRIBUTING_URL, GITHUB_URL } from "@/lib/links"
+import { CONTRIBUTING_URL, GITHUB_URL, PAGE_TITLES } from "@/lib/links"
 import { TEAM } from "@/data/team"
 import { Header } from "./Header"
 import { TeamAvatar } from "./TeamAvatar"
@@ -116,8 +116,8 @@ export function ProjectPage({ page }: { page: "team" | "source" }) {
   const title = isTeam ? "Qui sommes-nous ?" : "Scolup est open source."
 
   useEffect(() => {
-    document.title = `${title} · Scolup`
-  }, [title])
+    document.title = PAGE_TITLES[page]
+  }, [page])
 
   return (
     <div className="landing project-page antialiased" data-page={page}>
@@ -157,15 +157,17 @@ export function ProjectPage({ page }: { page: "team" | "source" }) {
               <img src="/logos/logo.svg" width={144} height={144} alt="" />
             </div>
           ) : (
-            <div
+            <a
               className="project-page__art project-page__art--source"
-              aria-hidden="true"
+              href="https://opensource.org/"
             >
-              <div>
-                <HugeiconsIcon icon={CodeIcon} size={42} />
-                <span>AGPL v3</span>
-              </div>
-            </div>
+              <img
+                src="/logos/osi.svg"
+                width={144}
+                height={144}
+                alt="Open Source Initiative"
+              />
+            </a>
           )}
         </div>
         {isTeam ? <TeamContent /> : <SourceContent />}

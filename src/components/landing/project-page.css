@@ -78,23 +78,9 @@
   rotate: -9deg;
 }
 
-.project-page__art--source > div {
-  display: grid;
-  justify-items: center;
-  gap: 0.45rem;
-  padding: 1rem 1.15rem;
-  border: 1px solid #c1d0e761;
-  border-radius: 1.1rem;
-  background: linear-gradient(155deg, #303945, #1b2028);
-  box-shadow: 0 1rem 2.5rem #0006;
-}
-
-.project-page__art--source span {
-  color: #dbe5f4;
-  font:
-    680 0.875rem / 1.2 "Geist Variable",
-    sans-serif;
-  letter-spacing: 0.04em;
+.project-page__art--source img {
+  filter: drop-shadow(0 0 1.5rem #adc2eb60);
+  rotate: none;
 }
 
 .project-team,
@@ -190,29 +176,6 @@
 
 .project-contribute .project-page__button {
   margin-top: 0;
-}
-
-.project-legal {
-  max-width: 48rem;
-  padding-top: clamp(2rem, 8vw, 6rem);
-}
-
-.project-legal h1 {
-  max-width: none;
-  font-size: clamp(2.55rem, 6vw, 4.6rem);
-}
-
-.project-legal section {
-  margin-top: clamp(1.5rem, 5vw, 3.5rem);
-  padding-top: 1.3rem;
-  border-top: 1px solid var(--project-line);
-}
-
-.project-legal__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 1.5rem;
-  margin-top: 1.5rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {

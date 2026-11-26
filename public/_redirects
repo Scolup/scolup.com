@@ -1,10 +1,4 @@
 /github https://github.com/Scolup 302
-/tuto/app /index.html 200
-/who /index.html 200
 /WHO /who 301
-/osi /index.html 200
 /OSI /osi 301
-/mentions /index.html 200
-/terms /index.html 200
-/privacy /index.html 200
-/security /index.html 200
+/tuto/app /tuto 301

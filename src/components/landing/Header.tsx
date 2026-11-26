@@ -5,6 +5,7 @@ import {
   InformationCircleIcon,
   Mail01Icon,
   Menu01Icon,
+  ScreenAddToHomeIcon,
   SmartPhone01Icon,
   SparklesIcon,
   SourceCodeIcon,
@@ -15,20 +16,15 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { useEffect, useRef, useState, type MouseEvent } from "react"
 
 import {
+  APP_TUTORIAL_PATH,
   CONTACT_URL,
   CONTRIBUTING_URL,
-  GITHUB_URL,
   OPEN_SOURCE_PATH,
   TEAM_PATH,
   WHATSAPP_URL,
 } from "@/lib/links"
 import { OpenAppButton } from "./OpenAppButton"
-
-const quickLinks = [
-  { href: WHATSAPP_URL, label: "Actualités", icon: WhatsappIcon },
-  { href: GITHUB_URL, label: "Code source", icon: GithubIcon },
-  { href: CONTACT_URL, label: "Contact", icon: Mail01Icon },
-]
+import { MenuHoverList } from "./MenuHoverList"
 
 const groups = [
   {
@@ -57,12 +53,13 @@ export function Header({
   variant = "main",
 }: {
   homeHref?: string
-  variant?: "main" | "project" | "tutorial"
+  variant?: "main" | "project"
 }) {
   const headerRef = useRef<HTMLElement>(null)
   const [light, setLight] = useState(false)
   const [menu, setMenu] = useState<GroupId | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const closeTimer = useRef<number>(undefined)
   const sectionHref = (id: string) => `/?landing=1&section=${id}`
 
   useEffect(() => {
@@ -106,7 +103,10 @@ export function Header({
     return () => document.removeEventListener("pointerdown", closeOutside)
   }, [menu, mobileOpen])
 
+  useEffect(() => () => window.clearTimeout(closeTimer.current), [])
+
   const closeMenu = () => {
+    window.clearTimeout(closeTimer.current)
     setMenu(null)
     setMobileOpen(false)
   }
@@ -159,137 +159,144 @@ export function Header({
           <img src="/logos/logo.svg" alt="" width={28} height={28} />
           Scolup
         </a>
-        {variant === "tutorial" ? (
+        <div className="landing-header__actions">
+          <button
+            type="button"
+            className="site-nav-toggle"
+            aria-label="Menu de navigation"
+            aria-expanded={mobileOpen}
+            aria-controls="site-nav"
+            onClick={() => {
+              setMenu(null)
+              setMobileOpen(!mobileOpen)
+            }}
+          >
+            <HugeiconsIcon icon={Menu01Icon} size={23} aria-hidden="true" />
+          </button>
           <nav
-            className="landing-header__nav landing-header__nav--simple"
+            className="site-nav"
+            id="site-nav"
+            data-mobile-open={mobileOpen || undefined}
             aria-label="Navigation principale"
           >
-            {quickLinks.map(({ href, label, icon }) => (
-              <a key={href} href={href} aria-label={label}>
-                <HugeiconsIcon icon={icon} size={18} aria-hidden="true" />
-                <span>{label}</span>
-              </a>
-            ))}
-          </nav>
-        ) : (
-          <div className="landing-header__actions">
-            <button
-              type="button"
-              className="site-nav-toggle"
-              aria-label="Menu de navigation"
-              aria-expanded={mobileOpen}
-              aria-controls="site-nav"
-              onClick={() => {
-                setMenu(null)
-                setMobileOpen(!mobileOpen)
-              }}
-            >
-              <HugeiconsIcon icon={Menu01Icon} size={23} aria-hidden="true" />
-            </button>
-            <nav
-              className="site-nav"
-              id="site-nav"
-              data-mobile-open={mobileOpen || undefined}
-              aria-label="Navigation principale"
-            >
-              {groups.map(({ id, label, icon }) => (
-                <div
-                  className="site-nav__group"
-                  key={id}
-                  onPointerEnter={(event) => {
-                    if (event.pointerType === "mouse" && !mobileOpen)
-                      setMenu(id)
-                  }}
-                  onPointerLeave={(event) => {
-                    if (
-                      event.pointerType === "mouse" &&
-                      !mobileOpen &&
-                      !event.currentTarget.contains(document.activeElement)
-                    ) {
-                      setMenu((current) => (current === id ? null : current))
+            {groups.map(({ id, label, icon }) => (
+              <div
+                className="site-nav__group"
+                data-group={id}
+                key={id}
+                onPointerEnter={(event) => {
+                  if (event.pointerType === "mouse" && !mobileOpen) {
+                    window.clearTimeout(closeTimer.current)
+                    setMenu(id)
+                  }
+                }}
+                onPointerLeave={(event) => {
+                  if (
+                    event.pointerType === "mouse" &&
+                    !mobileOpen &&
+                    !event.currentTarget.contains(document.activeElement)
+                  ) {
+                    window.clearTimeout(closeTimer.current)
+                    closeTimer.current = window.setTimeout(
+                      () =>
+                        setMenu((current) => (current === id ? null : current)),
+                      110
+                    )
+                  }
+                }}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget))
+                    setMenu((current) => (current === id ? null : current))
+                }}
+              >
+                <div className="site-nav__trigger">
+                  {id === "overview" ? (
+                    <a
+                      href={sectionHref("fonctionnalites")}
+                      onClick={(event) => openSection(event, "fonctionnalites")}
+                    >
+                      <HugeiconsIcon icon={icon} size={18} aria-hidden="true" />
+                      {label}
+                    </a>
+                  ) : null}
+                  <button
+                    type="button"
+                    aria-label={
+                      id === "overview"
+                        ? "Afficher les sections de présentation"
+                        : undefined
                     }
-                  }}
-                  onBlur={(event) => {
-                    if (!event.currentTarget.contains(event.relatedTarget))
-                      setMenu((current) => (current === id ? null : current))
-                  }}
-                >
-                  <div className="site-nav__trigger">
-                    {id === "overview" ? (
-                      <a
-                        href={sectionHref("fonctionnalites")}
-                        onClick={(event) =>
-                          openSection(event, "fonctionnalites")
-                        }
-                      >
+                    aria-expanded={menu === id}
+                    aria-controls={`nav-${id}`}
+                    onClick={() =>
+                      setMenu((current) => (current === id ? null : id))
+                    }
+                  >
+                    {id !== "overview" && (
+                      <>
                         <HugeiconsIcon
                           icon={icon}
                           size={18}
                           aria-hidden="true"
                         />
                         {label}
-                      </a>
-                    ) : null}
-                    <button
-                      type="button"
-                      aria-label={
-                        id === "overview"
-                          ? "Afficher les sections de présentation"
-                          : undefined
-                      }
-                      aria-expanded={menu === id}
-                      aria-controls={`nav-${id}`}
-                      onClick={() =>
-                        setMenu((current) => (current === id ? null : id))
-                      }
-                    >
-                      {id !== "overview" && (
-                        <>
+                      </>
+                    )}
+                    <HugeiconsIcon
+                      className="site-nav__chevron"
+                      icon={ArrowDown01Icon}
+                      size={15}
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
+                <div
+                  className="site-nav__dropdown"
+                  id={`nav-${id}`}
+                  data-open={menu === id || undefined}
+                  inert={menu !== id}
+                  onClick={(event) => {
+                    if (
+                      event.target instanceof Element &&
+                      event.target.closest("a")
+                    )
+                      closeMenu()
+                  }}
+                >
+                  <MenuHoverList open={menu === id}>
+                    {id === "overview" && (
+                      <>
+                        {overviewLinks.map(
+                          ({
+                            id: section,
+                            label: title,
+                            icon: sectionIcon,
+                          }) => (
+                            <a
+                              key={section}
+                              href={sectionHref(section)}
+                              onClick={(event) => openSection(event, section)}
+                            >
+                              <HugeiconsIcon
+                                icon={sectionIcon}
+                                size={18}
+                                aria-hidden="true"
+                              />
+                              {title}
+                            </a>
+                          )
+                        )}
+                        <hr />
+                        <a href={APP_TUTORIAL_PATH}>
                           <HugeiconsIcon
-                            icon={icon}
+                            icon={ScreenAddToHomeIcon}
                             size={18}
                             aria-hidden="true"
                           />
-                          {label}
-                        </>
-                      )}
-                      <HugeiconsIcon
-                        className="site-nav__chevron"
-                        icon={ArrowDown01Icon}
-                        size={15}
-                        aria-hidden="true"
-                      />
-                    </button>
-                  </div>
-                  <div
-                    className="site-nav__dropdown"
-                    id={`nav-${id}`}
-                    hidden={menu !== id}
-                    onClick={(event) => {
-                      if (
-                        event.target instanceof Element &&
-                        event.target.closest("a")
-                      )
-                        closeMenu()
-                    }}
-                  >
-                    {id === "overview" &&
-                      overviewLinks.map(
-                        ({ id: section, label: title, icon: sectionIcon }) => (
-                          <a
-                            key={section}
-                            href={sectionHref(section)}
-                            onClick={(event) => openSection(event, section)}
-                          >
-                            <HugeiconsIcon
-                              icon={sectionIcon}
-                              size={18}
-                              aria-hidden="true"
-                            />
-                            {title}
-                          </a>
-                        )
-                      )}
+                          Ajouter à l’écran d’accueil
+                        </a>
+                      </>
+                    )}
                     {id === "about" && (
                       <>
                         <a href={TEAM_PATH}>
@@ -357,13 +364,13 @@ export function Header({
                         </div>
                       </>
                     )}
-                  </div>
+                  </MenuHoverList>
                 </div>
-              ))}
-            </nav>
-            <OpenAppButton />
-          </div>
-        )}
+              </div>
+            ))}
+          </nav>
+          <OpenAppButton />
+        </div>
       </div>
     </header>
   )
