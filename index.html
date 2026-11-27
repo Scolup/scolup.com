@@ -26,32 +26,6 @@
         filter: brightness(0) invert(1);
       }
 
-      .scolup-startup__recovery {
-        position: absolute;
-        inset-inline: 1rem;
-        top: calc(50% + 3.25rem);
-        visibility: hidden;
-      }
-
-      .scolup-startup__recovery p {
-        margin: 0.5rem 0;
-      }
-
-      .scolup-startup__recovery a {
-        color: inherit;
-        text-decoration: underline;
-      }
-
-      #root:empty + .scolup-startup .scolup-startup__recovery {
-        animation: scolup-startup-reveal 0s 15s forwards;
-      }
-
-      @keyframes scolup-startup-reveal {
-        to {
-          visibility: visible;
-        }
-      }
-
       .scolup-startup[data-ready] {
         pointer-events: none;
         animation: scolup-startup-fade 400ms ease-out forwards;
@@ -70,6 +44,39 @@
         }
       }
     </style>
+    <script data-cfasync="false">
+      (() => {
+        function redirectIfNotStarted() {
+          const root = document.getElementById("root")
+          if (!root || !root.firstElementChild) {
+            window.location.replace("https://app.scolup.com/")
+          }
+        }
+
+        function handleStartupError(event) {
+          const target = event.target
+          const moduleFailed =
+            target instanceof HTMLScriptElement && target.type === "module"
+          const moduleThrew =
+            event instanceof ErrorEvent &&
+            event.filename &&
+            Array.from(
+              document.querySelectorAll('script[type="module"][src]')
+            ).some((script) => script.src === event.filename)
+
+          if (moduleFailed || moduleThrew) redirectIfNotStarted()
+        }
+
+        window.addEventListener("error", handleStartupError, true)
+        window.setTimeout(() => {
+          window.removeEventListener("error", handleStartupError, true)
+          redirectIfNotStarted()
+        }, 15000)
+      })()
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=https://app.scolup.com/" />
+    </noscript>
 
     <title>Scolup – Gamifie ta vie scolaire</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -174,11 +181,6 @@
             alt="Chargement de Scolup"
           />
         </picture>
-      </div>
-      <div class="scolup-startup__recovery">
-        <p>Le chargement prend plus de temps que prévu.</p>
-        <p><a href="">Recharger la page</a></p>
-        <p><a href="https://app.scolup.com">Ouvrir l’application</a></p>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
