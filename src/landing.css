@@ -18,15 +18,6 @@
   margin-inline: auto;
 }
 
-.landing-route-fallback {
-  display: grid;
-  min-height: 100svh;
-  place-items: center;
-  color: var(--muted);
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
 html:has(.landing) {
   scrollbar-width: none;
 }

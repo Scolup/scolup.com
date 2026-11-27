@@ -36,6 +36,12 @@ function replaceMeta(
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    cssCodeSplit: false,
+    rolldownOptions: {
+      output: { codeSplitting: false },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -49,6 +55,42 @@ export default defineConfig({
           if (index?.type !== "asset" || typeof index.source !== "string") {
             this.error("The landing page HTML was not generated")
           }
+
+          // Serve the app with the HTML so a wrong MIME type on assets
+          // cannot prevent Cloudflare Pages from loading the interface.
+          const scriptTag =
+            /<script type="module"[^>]* src="\/([^"]+)"[^>]*><\/script>/
+          const styleTag = /<link rel="stylesheet"[^>]* href="\/([^"]+)"[^>]*>/
+          const scriptFile = index.source.match(scriptTag)?.[1]
+          const styleFile = index.source.match(styleTag)?.[1]
+          const script = scriptFile ? bundle[scriptFile] : undefined
+          const style = styleFile ? bundle[styleFile] : undefined
+
+          if (
+            script?.type !== "chunk" ||
+            script.imports.length ||
+            script.dynamicImports.length
+          ) {
+            this.error("Expected one JavaScript bundle without external imports")
+          }
+          if (style?.type !== "asset") {
+            this.error("Expected a single generated stylesheet")
+          }
+
+          const inlineScript = script.code.replace(/<\/(script)/gi, "<\\/$1")
+          const css =
+            typeof style.source === "string"
+              ? style.source
+              : new TextDecoder().decode(style.source)
+          const inlineStyle = css.replace(/<\/(style)/gi, "\\3C /$1")
+          index.source = index.source
+            .replace(
+              scriptTag,
+              () => `<script type="module">${inlineScript}</script>`
+            )
+            .replace(styleTag, () => `<style>${inlineStyle}</style>`)
+          delete bundle[script.fileName]
+          delete bundle[style.fileName]
 
           const pages = [
             [TEAM_PATH, PAGE_TITLES.team, PAGE_DESCRIPTIONS.team],
