@@ -1,15 +1,16 @@
 import {
-  ArrowUpRight01Icon,
   Calendar02Icon,
   Chair02Icon,
   Comment03Icon,
   Home01Icon,
   LibraryIcon,
   Mortarboard01Icon,
+  Search01Icon,
   StickyNote02Icon,
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
+import { Button } from "@/components/ui/button"
 import { APP_URL } from "@/lib/links"
 
 const leftIcons = {
@@ -89,20 +90,38 @@ export function HeroSection() {
           gagne des rubis au fil de ta journée.
         </p>
         <div className="landing-hero__actions">
-          <a className="landing-hero__cta" href={APP_URL}>
+          <Button size="lg" nativeButton={false} render={<a href={APP_URL} />}>
+            <img
+              src="/logos/logo.svg"
+              width={16}
+              height={16}
+              alt=""
+              data-icon="inline-start"
+            />
             Ouvrir Scolup
+          </Button>
+          <Button
+            variant="secondary"
+            size="lg"
+            nativeButton={false}
+            render={<a href="#apercu" />}
+          >
             <HugeiconsIcon
-              icon={ArrowUpRight01Icon}
-              size={17}
+              icon={Search01Icon}
+              data-icon="inline-start"
               aria-hidden="true"
             />
-          </a>
-          <a
-            className="landing-hero__cta landing-hero__cta--secondary"
-            href="#apercu"
-          >
             Voir un aperçu
-          </a>
+          </Button>
+        </div>
+        <div className="landing-hero__compatibility">
+          Compatible avec
+          <img
+            src="/logos/ecoledirecte.svg"
+            alt="ÉcoleDirecte"
+            width={22}
+            height={22}
+          />
         </div>
       </div>
     </section>
