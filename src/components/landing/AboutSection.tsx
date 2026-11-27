@@ -1,11 +1,15 @@
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
-import { TEAM } from "@/data/team"
+import { useState } from "react"
+
+import { getShuffledTeam } from "@/data/team"
 import { TEAM_PATH } from "@/lib/links"
 import { TeamAvatar } from "./TeamAvatar"
 
 export function AboutSection() {
+  const [team] = useState(getShuffledTeam)
+
   return (
     <section className="landing-vision" aria-labelledby="vision-title">
       <div className="landing-vision__intro">
@@ -25,7 +29,7 @@ export function AboutSection() {
         </a>
       </div>
       <ul className="landing-vision__team" aria-label="L’équipe Scolup">
-        {TEAM.map(({ name }) => (
+        {team.map(({ name }) => (
           <li key={name}>
             <a
               href={`https://github.com/${name}`}

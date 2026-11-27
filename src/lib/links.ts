@@ -9,6 +9,14 @@ export const PAGE_TITLES = {
   team: "Scolup – Qui sommes-nous ?",
   source: "Scolup – Open source",
 } as const
+
+export const PAGE_DESCRIPTIONS = {
+  tutorial:
+    "Installe Scolup sur l’écran d’accueil de ton téléphone en quelques étapes simples.",
+  team: "Découvre les étudiants qui créent Scolup, un client alternatif gratuit et open source pour EcoleDirecte.",
+  source:
+    "Le code de Scolup est public sous licence GNU AGPL v3. Découvre le projet et contribue sur GitHub.",
+} as const
 export const CONTRIBUTING_URL = GITHUB_URL + "/blob/main/CONTRIBUTING.md"
 export const WHATSAPP_URL =
   "https://whatsapp.com/channel/0029VbEIpTSBPzjPi38tyD46"

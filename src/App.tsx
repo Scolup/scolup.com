@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react"
 
 import {
   buildAppUrl,
@@ -18,8 +18,6 @@ import {
   RedirectAlert,
   ScreenshotsSection,
 } from "@/components/landing"
-import { AppTutorial } from "@/components/landing/AppTutorial"
-import { ProjectPage } from "@/components/landing/ProjectPage"
 import {
   APP_TUTORIAL_PATH,
   GITHUB_ORG_URL,
@@ -28,6 +26,17 @@ import {
 } from "@/lib/links"
 
 import "./landing.css"
+
+const AppTutorial = lazy(() =>
+  import("@/components/landing/AppTutorial").then((module) => ({
+    default: module.AppTutorial,
+  }))
+)
+const ProjectPage = lazy(() =>
+  import("@/components/landing/ProjectPage").then((module) => ({
+    default: module.ProjectPage,
+  }))
+)
 
 function LandingPage() {
   const [goAppDirect, setGoAppDirect] = useState(false)
@@ -87,19 +96,33 @@ function RouteRedirect({ href, label }: { href: string; label: string }) {
   return <a href={href}>{label}</a>
 }
 
+function RouteFallback() {
+  return (
+    <div className="landing-route-fallback" role="status">
+      Chargement…
+    </div>
+  )
+}
+
 export function App() {
   const pathname = window.location.pathname.replace(/\/$/, "")
+  let page: ReactNode
 
   if (pathname === APP_TUTORIAL_PATH + "/app") {
-    return <RouteRedirect href={APP_TUTORIAL_PATH} label="Ouvrir le tuto" />
+    page = <RouteRedirect href={APP_TUTORIAL_PATH} label="Ouvrir le tuto" />
+  } else if (pathname === APP_TUTORIAL_PATH) {
+    page = <AppTutorial />
+  } else if (pathname.toLowerCase() === TEAM_PATH) {
+    page = <ProjectPage page="team" />
+  } else if (pathname.toLowerCase() === OPEN_SOURCE_PATH) {
+    page = <ProjectPage page="source" />
+  } else if (pathname === "/github") {
+    page = <RouteRedirect href={GITHUB_ORG_URL} label="Ouvrir GitHub" />
+  } else {
+    page = <LandingPage />
   }
-  if (pathname === APP_TUTORIAL_PATH) return <AppTutorial />
-  if (pathname.toLowerCase() === TEAM_PATH) return <ProjectPage page="team" />
-  if (pathname.toLowerCase() === OPEN_SOURCE_PATH)
-    return <ProjectPage page="source" />
-  if (pathname === "/github")
-    return <RouteRedirect href={GITHUB_ORG_URL} label="Ouvrir GitHub" />
-  return <LandingPage />
+
+  return <Suspense fallback={<RouteFallback />}>{page}</Suspense>
 }
 
 export default App

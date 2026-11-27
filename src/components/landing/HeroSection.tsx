@@ -1,4 +1,5 @@
 import {
+  ArrowUpRight01Icon,
   Calendar02Icon,
   Chair02Icon,
   Comment03Icon,
@@ -8,6 +9,8 @@ import {
   StickyNote02Icon,
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+
+import { APP_URL } from "@/lib/links"
 
 const leftIcons = {
   agenda: Calendar02Icon,
@@ -85,6 +88,22 @@ export function HeroSection() {
           Retrouve tes notes, tes cours et tes devoirs, relève des quêtes et
           gagne des rubis au fil de ta journée.
         </p>
+        <div className="landing-hero__actions">
+          <a className="landing-hero__cta" href={APP_URL}>
+            Ouvrir Scolup
+            <HugeiconsIcon
+              icon={ArrowUpRight01Icon}
+              size={17}
+              aria-hidden="true"
+            />
+          </a>
+          <a
+            className="landing-hero__cta landing-hero__cta--secondary"
+            href="#apercu"
+          >
+            Voir un aperçu
+          </a>
+        </div>
       </div>
     </section>
   )
