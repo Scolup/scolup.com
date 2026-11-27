@@ -2,31 +2,48 @@ export const SCREENSHOTS = [
   {
     src: "/screenshots/Homepage.png",
     label: "Accueil",
-    alt: "Aperçu de l'accueil dans Scolup",
+    title: "Ta journée en un coup d’œil",
+    description:
+      "Les prochains cours, les devoirs à faire et tes objectifs sont visibles dès l’ouverture de Scolup.",
+    alt: "Écran d’accueil de Scolup avec les objectifs, les devoirs et les prochains cours",
   },
   {
     src: "/screenshots/Agenda.png",
     label: "Agenda",
-    alt: "Aperçu de l'agenda dans Scolup",
+    title: "Repère ton prochain cours",
+    description:
+      "Retrouve tes horaires, tes salles et les changements d’emploi du temps dans ton agenda.",
+    alt: "Capture de l’agenda de Scolup",
   },
   {
     src: "/screenshots/Grades.png",
     label: "Notes",
-    alt: "Aperçu des notes dans Scolup",
+    title: "Suis tes moyennes",
+    description:
+      "Retrouve tes dernières évaluations, tes moyennes par matière et leur évolution.",
+    alt: "Écran des notes avec le graphique de la moyenne générale et les dernières évaluations",
   },
   {
     src: "/screenshots/Homework.png",
     label: "Devoirs",
-    alt: "Aperçu des devoirs dans Scolup",
+    title: "Vois ce qu’il te reste à faire",
+    description:
+      "Parcours les devoirs à rendre et coche-les au fur et à mesure.",
+    alt: "Capture de la liste des devoirs dans Scolup",
   },
   {
     src: "/screenshots/Messages.png",
     label: "Messages",
-    alt: "Aperçu des messages dans Scolup",
+    title: "Retrouve tes échanges",
+    description: "Consulte les messages de ton compte scolaire depuis Scolup.",
+    alt: "Capture des messages dans Scolup",
   },
   {
     src: "/screenshots/SessionContent.png",
     label: "Contenu du cours",
-    alt: "Aperçu du contenu d'un cours dans Scolup",
+    title: "Rouvre le contenu d’une séance",
+    description:
+      "Retrouve les informations ajoutées à un cours par ton établissement.",
+    alt: "Capture du contenu d’une séance dans Scolup",
   },
 ] as const

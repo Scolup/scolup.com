@@ -1,57 +1,36 @@
+import { GithubIcon, Globe02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import type { MouseEventHandler } from "react"
 
-import { Button } from "@/components/ui/button"
-import {
-  PopoverContent,
-  PopoverHeader,
-  PopoverTitle,
-} from "@/components/ui/popover"
+import { PopoverContent, PopoverTitle } from "@/components/ui/popover"
 import { APP_URL } from "@/lib/go-app"
-
-type OpenAppPopoverProps = {
-  goAppDirect: boolean
-  onOpenOnce: () => void
-  onEnableDirect: () => void
-  onDisableDirect: () => void
-}
+import { MenuHoverList } from "./MenuHoverList"
 
 export function OpenAppPopover({
-  goAppDirect,
-  onOpenOnce,
-  onEnableDirect,
-  onDisableDirect,
-}: OpenAppPopoverProps) {
+  onBrowserOpen,
+}: {
+  onBrowserOpen: MouseEventHandler<HTMLAnchorElement>
+}) {
   return (
-    <PopoverContent align="center" className="w-80">
-      <PopoverHeader>
-        <PopoverTitle>Marre de cliquer ici à chaque fois ?</PopoverTitle>
-      </PopoverHeader>
-      <div className="flex flex-col gap-2">
-        <Button
-          type="button"
-          onClick={onOpenOnce}
-          size="sm"
-          variant="outline"
-          render={<a href={APP_URL} aria-label="Ouvrir Scolup maintenant" />}
-        >
-          Ouvrir une fois
-          <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            data-icon="inline-end"
-            className="transition-transform duration-150 group-hover/button:translate-x-1"
-          />
-        </Button>
-        {goAppDirect ? (
-          <Button type="button" onClick={onDisableDirect}>
-            Ne plus ouvrir automatiquement
-          </Button>
-        ) : (
-          <Button type="button" onClick={onEnableDirect}>
-            Toujours ouvrir directement
-          </Button>
-        )}
-      </div>
+    <PopoverContent
+      align="end"
+      side="bottom"
+      sideOffset={6}
+      className="landing-launcher-menu"
+    >
+      <PopoverTitle className="sr-only">
+        Options d’ouverture de Scolup
+      </PopoverTitle>
+      <MenuHoverList>
+        <a href={APP_URL} onClick={onBrowserOpen}>
+          <HugeiconsIcon icon={Globe02Icon} size={16} aria-hidden="true" />
+          Ouvrir
+        </a>
+        <a href="/github">
+          <HugeiconsIcon icon={GithubIcon} size={16} aria-hidden="true" />
+          GitHub
+        </a>
+      </MenuHoverList>
     </PopoverContent>
   )
 }

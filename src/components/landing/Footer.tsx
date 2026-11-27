@@ -1,54 +1,78 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Mail01Icon, WhatsappIcon } from "@hugeicons/core-free-icons"
+import {
+  CONTACT_URL,
+  CONTRIBUTING_URL,
+  GITHUB_URL,
+  LEGAL_LINKS,
+  WHATSAPP_URL,
+} from "@/lib/links"
 
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import { AboutSection } from "./AboutSection"
+
+const columns = [
+  {
+    label: "Le projet",
+    links: [
+      { href: GITHUB_URL, label: "GitHub" },
+      { href: CONTRIBUTING_URL, label: "Contribuer" },
+    ],
+  },
+  {
+    label: "La communauté",
+    links: [
+      { href: WHATSAPP_URL, label: "Chaîne WhatsApp" },
+      { href: GITHUB_URL + "/issues", label: "Signaler un problème" },
+      { href: CONTACT_URL, label: "Nous écrire" },
+    ],
+  },
+]
 
 export function Footer() {
   return (
-    <footer
-      className="animate-rise mx-auto flex w-full max-w-3xl flex-col gap-8 px-6 pb-12"
-      style={{ animationDelay: "380ms" }}
-    >
-      <Separator />
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon"
-            render={
-              <a
-                href="mailto:hi@scolup.com"
-                aria-label="Contacter l'équipe Scolup par e-mail"
-              />
-            }
-          >
-            <HugeiconsIcon
-              icon={Mail01Icon}
-              className="transition-transform duration-150 group-hover/button:scale-110"
-            />
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon"
-            render={
-              <a
-                href="https://whatsapp.com/channel/0029Vb9hIrJ2Jl8Fr6S95E2h"
-                aria-label="Suivre Scolup sur WhatsApp"
-              />
-            }
-          >
-            <HugeiconsIcon
-              icon={WhatsappIcon}
-              className="transition-transform duration-150 group-hover/button:scale-110"
-            />
-          </Button>
+    <footer className="landing-footer">
+      <div className="landing-container">
+        <AboutSection />
+        <div className="landing-footer__directory">
+          <p>Scolup est gratuit et open source, non affilié à Aplim.</p>
+          {columns.map(({ label, links }) => (
+            <nav key={label} aria-label={label}>
+              <h3>{label}</h3>
+              <ul>
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+          <div className="landing-footer__legal">
+            <h3>Informations légales</h3>
+            <p>Disponibles à la réouverture de l’app.</p>
+            <ul>
+              {LEGAL_LINKS.map(({ href, label }) => (
+                <li key={href}>
+                  <span role="link" aria-disabled="true">
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <p className="text-center text-xs text-muted-foreground">
-          Fait avec 🍪 et 🧋 par <strong>typeof_</strong>
-        </p>
+        <a
+          className="landing-footer__brand"
+          href="#top"
+          aria-label="Scolup, retour en haut"
+        >
+          <picture>
+            <source
+              media="(prefers-reduced-motion: reduce)"
+              srcSet="/logos/logo.svg"
+            />
+            <img src="/logos/loader.svg" width={180} height={180} alt="" />
+          </picture>
+          <span>Scolup</span>
+        </a>
       </div>
     </footer>
   )

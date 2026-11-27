@@ -1,22 +1,27 @@
+import {
+  Calendar03Icon,
+  ChartIncreaseIcon,
+  LibraryIcon,
+} from "@hugeicons/core-free-icons"
+
 export const HIGHLIGHTS = [
   {
-    title: "Moyennes claires",
-    description:
-      "Tes moyennes par matière, générales, en temps réel. Range ta calculatrice.",
+    id: "notes",
+    label: "Comprends tes notes",
+    icon: ChartIncreaseIcon,
+    description: "Suis tes moyennes et vois l’effet de chaque nouvelle note.",
   },
   {
-    title: "Devoirs sans stress",
-    description:
-      "Agenda lisible, ajout de devoirs personnalisés. Tu sais quoi faire, dans quel ordre.",
+    id: "agenda",
+    label: "Organise ta journée",
+    icon: Calendar03Icon,
+    description: "Retrouve tes horaires et les salles de tes prochains cours.",
   },
   {
-    title: "Emploi du temps lisible",
+    id: "devoirs",
+    label: "Retrouve tes devoirs",
+    icon: LibraryIcon,
     description:
-      "Salles, profs, changements. Lisible d'un coup d'œil, même sur mobile.",
-  },
-  {
-    title: "Quêtes & rubis",
-    description:
-      "Finis des quêtes en faisant tes devoirs et évaluations, et récupère des rubis en récompense.",
+      "Vois ce qu’il te reste à rendre et coche les devoirs terminés.",
   },
 ] as const

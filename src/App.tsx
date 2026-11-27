@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react"
 
 import {
-  APP_URL,
   buildAppUrl,
   getGoAppPreference,
   setGoAppPreference,
@@ -10,21 +9,36 @@ import {
 } from "@/lib/go-app"
 
 import {
-  AboutSection,
-  CTASection,
   FAQSection,
   FeaturesSection,
   Footer,
   Header,
   HeroSection,
   HowItWorksSection,
-  OpenSourceSection,
   RedirectAlert,
   ScreenshotsSection,
-  SecuritySection,
 } from "@/components/landing"
+import {
+  APP_TUTORIAL_PATH,
+  GITHUB_ORG_URL,
+  OPEN_SOURCE_PATH,
+  TEAM_PATH,
+} from "@/lib/links"
 
-export function App() {
+import "./landing.css"
+
+const AppTutorial = lazy(() =>
+  import("@/components/landing/AppTutorial").then((module) => ({
+    default: module.AppTutorial,
+  }))
+)
+const ProjectPage = lazy(() =>
+  import("@/components/landing/ProjectPage").then((module) => ({
+    default: module.ProjectPage,
+  }))
+)
+
+function LandingPage() {
   const [goAppDirect, setGoAppDirect] = useState(false)
   const [isBypass] = useState(() =>
     typeof window === "undefined"
@@ -34,53 +48,81 @@ export function App() {
 
   useEffect(() => {
     setGoAppDirect(getGoAppPreference())
-    if (shouldRedirectToApp(window.location.search)) {
+    const url = new URL(window.location.href)
+    const section = url.searchParams.get("section")
+    const target = document.getElementById(section ?? url.hash.slice(1))
+    if (target) {
+      target.scrollIntoView()
+    } else if (shouldRedirectToApp(window.location.search)) {
       window.location.replace(buildAppUrl(window.location.search))
+    }
+    if (section) {
+      url.searchParams.delete("section")
+      history.replaceState(history.state, "", url)
     }
   }, [])
 
-  const handleEnableDirect = () => {
-    setGoAppDirect(true)
-    setGoAppPreference(true)
-    window.location.href = APP_URL
-  }
-
-  const handleDisableDirect = () => {
-    setGoAppDirect(false)
-    setGoAppPreference(false)
-  }
-
   return (
-    <div
-      id="top"
-      className="flex min-h-svh flex-col bg-background text-foreground antialiased"
-    >
+    <div id="top" className="landing landing-home antialiased">
+      <a className="landing-skip" href="#contenu">
+        Aller au contenu
+      </a>
       {isBypass && goAppDirect && (
-        <RedirectAlert onDisableDirect={handleDisableDirect} />
+        <RedirectAlert
+          onDisableDirect={() => {
+            setGoAppDirect(false)
+            setGoAppPreference(false)
+          }}
+        />
       )}
       <Header />
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-16 px-6 py-20 sm:gap-24 sm:py-28">
-        <HeroSection
-          goAppDirect={goAppDirect}
-          onEnableDirect={handleEnableDirect}
-          onDisableDirect={handleDisableDirect}
-        />
-        <HowItWorksSection />
-        <FAQSection />
-        <AboutSection />
+      <main id="contenu" tabIndex={-1}>
+        <HeroSection />
         <FeaturesSection />
         <ScreenshotsSection />
-        <SecuritySection />
-        <OpenSourceSection />
-        <CTASection
-          goAppDirect={goAppDirect}
-          onEnableDirect={handleEnableDirect}
-          onDisableDirect={handleDisableDirect}
-        />
+        <HowItWorksSection />
+        <FAQSection />
       </main>
       <Footer />
     </div>
   )
+}
+
+function RouteRedirect({ href, label }: { href: string; label: string }) {
+  useEffect(() => {
+    window.location.replace(href)
+  }, [href])
+
+  return <a href={href}>{label}</a>
+}
+
+function RouteFallback() {
+  return (
+    <div className="landing-route-fallback" role="status">
+      Chargement…
+    </div>
+  )
+}
+
+export function App() {
+  const pathname = window.location.pathname.replace(/\/$/, "")
+  let page: ReactNode
+
+  if (pathname === APP_TUTORIAL_PATH + "/app") {
+    page = <RouteRedirect href={APP_TUTORIAL_PATH} label="Ouvrir le tuto" />
+  } else if (pathname === APP_TUTORIAL_PATH) {
+    page = <AppTutorial />
+  } else if (pathname.toLowerCase() === TEAM_PATH) {
+    page = <ProjectPage page="team" />
+  } else if (pathname.toLowerCase() === OPEN_SOURCE_PATH) {
+    page = <ProjectPage page="source" />
+  } else if (pathname === "/github") {
+    page = <RouteRedirect href={GITHUB_ORG_URL} label="Ouvrir GitHub" />
+  } else {
+    page = <LandingPage />
+  }
+
+  return <Suspense fallback={<RouteFallback />}>{page}</Suspense>
 }
 
 export default App

@@ -9,7 +9,6 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { SCREENSHOTS } from "@/data/screenshots"
-import { cn } from "@/lib/utils"
 
 export function ScreenshotsSection() {
   const [api, setApi] = useState<CarouselApi>()
@@ -17,74 +16,76 @@ export function ScreenshotsSection() {
 
   useEffect(() => {
     if (!api) return
-
-    const onSelect = () => setCurrent(api.selectedScrollSnap())
-    onSelect()
-    api.on("select", onSelect)
-
+    const updateCurrent = () => setCurrent(api.selectedScrollSnap())
+    updateCurrent()
+    api.on("select", updateCurrent)
+    api.on("reInit", updateCurrent)
     return () => {
-      api.off("select", onSelect)
+      api.off("select", updateCurrent)
+      api.off("reInit", updateCurrent)
     }
   }, [api])
 
   return (
     <section
-      className="animate-rise flex flex-col gap-6"
-      style={{ animationDelay: "315ms" }}
-      aria-label="Aperçus de Scolup"
+      id="apercu"
+      tabIndex={-1}
+      className="landing-container landing-section landing-preview"
+      aria-labelledby="preview-title"
     >
-      <h2 className="text-center font-heading text-xl font-semibold tracking-tight">
-        Scolup en images
-      </h2>
+      <header className="landing-section-heading">
+        <h2 id="preview-title">Un coup d’œil dans l’app.</h2>
+        <p>Explore quelques écrans de Scolup avant de te lancer.</p>
+      </header>
       <Carousel
+        className="landing-preview__carousel"
+        aria-labelledby="preview-title"
         setApi={setApi}
-        opts={{ align: "center", loop: true }}
-        className="mx-auto w-full max-w-xs"
+        opts={{
+          align: "start",
+          loop: true,
+          breakpoints: { "(prefers-reduced-motion: reduce)": { duration: 0 } },
+        }}
       >
-        <CarouselContent>
-          {SCREENSHOTS.map((screenshot) => (
-            <CarouselItem key={screenshot.src}>
-              <figure className="flex flex-col items-center gap-3 px-2">
+        <CarouselPrevious
+          className="landing-preview__arrow"
+          variant="ghost"
+          aria-label="Capture précédente"
+        />
+        <CarouselContent className="ml-0">
+          {SCREENSHOTS.map((screenshot, index) => (
+            <CarouselItem
+              key={screenshot.src}
+              className="pl-0"
+              aria-hidden={current !== index}
+              aria-label={screenshot.label}
+            >
+              <div className="landing-preview__panel">
+                <div className="landing-preview__copy">
+                  <h3>{screenshot.title}</h3>
+                  <p>{screenshot.description}</p>
+                </div>
                 <img
+                  className="landing-preview__media"
                   src={screenshot.src}
                   alt={screenshot.alt}
                   width={1206}
                   height={2622}
                   loading="lazy"
-                  decoding="async"
-                  className="h-auto w-full rounded-lg border bg-card object-cover shadow-sm"
                 />
-                <figcaption className="text-center text-sm font-medium text-muted-foreground">
-                  {screenshot.label}
-                </figcaption>
-              </figure>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious
-          aria-label="Capture précédente"
-          className="hidden sm:inline-flex"
-        />
         <CarouselNext
+          className="landing-preview__arrow"
+          variant="ghost"
           aria-label="Capture suivante"
-          className="hidden sm:inline-flex"
         />
+        <span className="sr-only" aria-live="polite">
+          {SCREENSHOTS[current].label} · {current + 1} sur {SCREENSHOTS.length}
+        </span>
       </Carousel>
-      <div className="flex items-center justify-center gap-2">
-        {SCREENSHOTS.map((screenshot, index) => (
-          <button
-            key={screenshot.src}
-            type="button"
-            aria-label={`Voir la capture ${screenshot.label}`}
-            aria-current={index === current}
-            onClick={() => api?.scrollTo(index)}
-            className={cn(
-              "size-2 rounded-full bg-muted-foreground/30 transition-colors",
-              index === current && "bg-foreground"
-            )}
-          />
-        ))}
-      </div>
     </section>
   )
 }
