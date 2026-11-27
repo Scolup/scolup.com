@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host --port 2328 --strictPort",
-    "deploy": "npx wrangler pages deploy ./dist --project-name=scolup-landing-page",
+    "deploy": "npm run build && npx wrangler pages deploy ./dist --project-name=scolup-landing-page --branch=main",
     "build": "tsc -b && vite build",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit"
