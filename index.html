@@ -25,10 +25,7 @@
     <meta property="og:site_name" content="Scolup" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:url" content="https://scolup.com/" />
-    <meta
-      property="og:title"
-      content="Scolup – Gamifie ta vie scolaire"
-    />
+    <meta property="og:title" content="Scolup – Gamifie ta vie scolaire" />
     <meta
       property="og:description"
       content="Retrouve tes notes, ton agenda et tes devoirs EcoleDirecte. Relève des quêtes et gagne des rubis."
@@ -41,10 +38,7 @@
       content="Scolup, l'application alternative à EcoleDirecte"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Scolup – Gamifie ta vie scolaire"
-    />
+    <meta name="twitter:title" content="Scolup – Gamifie ta vie scolaire" />
     <meta
       name="twitter:description"
       content="Retrouve tes notes, ton agenda et tes devoirs EcoleDirecte. Relève des quêtes et gagne des rubis."
@@ -87,24 +81,54 @@
             "operatingSystem": "Web",
             "inLanguage": "fr-FR",
             "isAccessibleForFree": true,
-            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR"
+            },
             "publisher": { "@id": "https://scolup.com/#organization" }
           }
         ]
       }
     </script>
+    <style>
+      .scolup-startup {
+        display: grid;
+        min-height: 100vh;
+        place-content: center;
+        gap: 0.75rem;
+        padding: 1.5rem;
+        background: #111;
+        color: #fff;
+        font:
+          1rem / 1.5 system-ui,
+          sans-serif;
+        text-align: center;
+      }
+
+      .scolup-startup h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .scolup-startup a {
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      #root:not(:empty) + .scolup-startup {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
-    <noscript>
-      <h1>Scolup — Gamifie ta vie scolaire</h1>
-      <p>
-        Scolup est un client alternatif gratuit et open-source pour
-        EcoleDirecte : notes, moyennes, devoirs, emploi du temps et messages
-        dans une interface moderne avec mode sombre.
-      </p>
-      <p><a href="https://app.scolup.com">Ouvrir Scolup</a></p>
-    </noscript>
+    <main class="scolup-startup">
+      <h1>Scolup</h1>
+      <p>Si le site ne s’affiche pas, essaie de recharger la page.</p>
+      <p><a href="">Recharger la page</a></p>
+      <p><a href="https://app.scolup.com">Ouvrir l’application</a></p>
+    </main>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

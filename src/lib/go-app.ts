@@ -55,7 +55,11 @@ function setCookie(name: string, value: string, sharedDomain: boolean): void {
   ]
   if (sharedDomain) parts.push(`Domain=${COOKIE_DOMAIN}`)
   if (window.location.protocol === "https:") parts.push("Secure")
-  document.cookie = parts.join("; ")
+  try {
+    document.cookie = parts.join("; ")
+  } catch {
+    // The browser may disallow cookies.
+  }
 }
 
 function sharedDomainApplies(): boolean {
@@ -98,23 +102,22 @@ export function incrementOpenCount(): number {
     // ignore (private mode, etc.)
   }
 
-  try {
-    setCookie(OPEN_COUNT_COOKIE, value, sharedDomainApplies())
-  } catch {
-    // ignore
-  }
+  setCookie(OPEN_COUNT_COOKIE, value, sharedDomainApplies())
 
   return next
 }
 
 function getCookie(name: string): string | null {
-  const cookies = document.cookie ? document.cookie.split("; ") : []
-  for (const cookie of cookies) {
-    const index = cookie.indexOf("=")
-    if (index === -1) continue
-    if (cookie.slice(0, index) === name) {
-      return decodeURIComponent(cookie.slice(index + 1))
+  try {
+    for (const cookie of document.cookie.split(";")) {
+      const entry = cookie.trimStart()
+      const index = entry.indexOf("=")
+      if (index !== -1 && entry.slice(0, index) === name) {
+        return decodeURIComponent(entry.slice(index + 1))
+      }
     }
+  } catch {
+    // An unreadable preference is treated as absent.
   }
   return null
 }

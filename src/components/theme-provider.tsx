@@ -31,6 +31,14 @@ function isTheme(value: string | null): value is Theme {
   return THEME_VALUES.includes(value as Theme)
 }
 
+function saveTheme(key: string, theme: Theme) {
+  try {
+    window.localStorage.setItem(key, theme)
+  } catch {
+    // The theme can still be changed for this visit.
+  }
+}
+
 function getSystemTheme(): ResolvedTheme {
   if (window.matchMedia(COLOR_SCHEME_QUERY).matches) {
     return "dark"
@@ -85,9 +93,11 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(storageKey)
-    if (isTheme(storedTheme)) {
-      return storedTheme
+    try {
+      const storedTheme = window.localStorage.getItem(storageKey)
+      if (isTheme(storedTheme)) return storedTheme
+    } catch {
+      // Keep the default when browser storage is inaccessible.
     }
 
     return defaultTheme
@@ -95,7 +105,7 @@ export function ThemeProvider({
 
   const setTheme = React.useCallback(
     (nextTheme: Theme) => {
-      localStorage.setItem(storageKey, nextTheme)
+      saveTheme(storageKey, nextTheme)
       setThemeState(nextTheme)
     },
     [storageKey]
@@ -167,7 +177,7 @@ export function ThemeProvider({
                 ? "light"
                 : "dark"
 
-        localStorage.setItem(storageKey, nextTheme)
+        saveTheme(storageKey, nextTheme)
         return nextTheme
       })
     }
@@ -181,11 +191,13 @@ export function ThemeProvider({
 
   React.useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
-      if (event.storageArea !== localStorage) {
+      if (event.key !== storageKey) {
         return
       }
 
-      if (event.key !== storageKey) {
+      try {
+        if (event.storageArea !== window.localStorage) return
+      } catch {
         return
       }
 
