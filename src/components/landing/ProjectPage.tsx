@@ -6,7 +6,7 @@ import {
   GithubIcon,
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { CONTRIBUTING_URL, GITHUB_URL, PAGE_TITLES } from "@/lib/links"
 import { TEAM } from "@/data/team"
@@ -14,10 +14,23 @@ import { Header } from "./Header"
 import { TeamAvatar } from "./TeamAvatar"
 import "./project-page.css"
 
+function shuffleTeam() {
+  const shuffled = [...TEAM]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const current = shuffled[i]
+    shuffled[i] = shuffled[j]
+    shuffled[j] = current
+  }
+  return shuffled
+}
+
 function TeamContent() {
+  const [team] = useState(shuffleTeam)
+
   return (
     <ul className="project-team landing-container" aria-label="L’équipe Scolup">
-      {TEAM.map(({ name, description }) => (
+      {team.map(({ name, description }) => (
         <li key={name}>
           <TeamAvatar name={name} />
           <div>
