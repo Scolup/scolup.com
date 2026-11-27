@@ -39,6 +39,7 @@ export function ScreenshotsSection() {
       </header>
       <Carousel
         className="landing-preview__carousel"
+        data-reveal="preview"
         aria-labelledby="preview-title"
         setApi={setApi}
         opts={{

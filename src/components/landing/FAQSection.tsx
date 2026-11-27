@@ -36,7 +36,7 @@ export function FAQSection() {
       </header>
       <Accordion className="landing-faq__list">
         {FAQS.map(({ question, answer }, index) => (
-          <AccordionItem key={question} value={question}>
+          <AccordionItem key={question} value={question} data-reveal="faq-row">
             <AccordionTrigger>
               <span className="landing-faq__question">
                 <HugeiconsIcon

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import {
   buildAppUrl,
@@ -30,6 +30,7 @@ import {
 import "./landing.css"
 
 function LandingPage() {
+  const landing = useRef<HTMLDivElement>(null)
   const [goAppDirect, setGoAppDirect] = useState(false)
   const [isBypass] = useState(() =>
     typeof window === "undefined"
@@ -53,8 +54,70 @@ function LandingPage() {
     }
   }, [])
 
+  useEffect(() => {
+    const container = landing.current
+    if (
+      !container ||
+      !("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return
+    }
+
+    const elements = Array.from(
+      container.querySelectorAll<HTMLElement>("[data-reveal]")
+    ).filter(
+      (element) => element.getBoundingClientRect().top >= window.innerHeight
+    )
+
+    const reveal: IntersectionObserverCallback = (entries, observer) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        const element = entry.target as HTMLElement
+        if (element.dataset.revealState === "pending") {
+          element.dataset.revealState = "shown"
+        }
+        observer.unobserve(element)
+      }
+    }
+
+    const revealInset = Math.min(176, Math.round(window.innerHeight * 0.23))
+    const observer = new IntersectionObserver(reveal, {
+      rootMargin: `0px 0px -${revealInset}px`,
+    })
+    const footerObserver = new IntersectionObserver(reveal, {
+      rootMargin: "0px 0px -12px",
+    })
+
+    function revealFocusedElement(event: FocusEvent) {
+      if (!(event.target instanceof HTMLElement)) return
+      const element = event.target.closest<HTMLElement>("[data-reveal-state]")
+      if (!element) return
+      delete element.dataset.revealState
+      observer.unobserve(element)
+      footerObserver.unobserve(element)
+    }
+
+    for (const element of elements) {
+      element.dataset.revealState = "pending"
+      if (element.dataset.reveal === "brand") {
+        footerObserver.observe(element)
+      } else {
+        observer.observe(element)
+      }
+    }
+    container.addEventListener("focusin", revealFocusedElement)
+
+    return () => {
+      observer.disconnect()
+      footerObserver.disconnect()
+      container.removeEventListener("focusin", revealFocusedElement)
+      for (const element of elements) delete element.dataset.revealState
+    }
+  }, [])
+
   return (
-    <div id="top" className="landing landing-home antialiased">
+    <div ref={landing} id="top" className="landing landing-home antialiased">
       <a className="landing-skip" href="#contenu">
         Aller au contenu
       </a>

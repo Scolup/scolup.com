@@ -18,7 +18,7 @@ export function FeaturesSection() {
       </div>
       <ul className="landing-features">
         {HIGHLIGHTS.map(({ id, label, description, icon }) => (
-          <li key={id} id={id}>
+          <li key={id} id={id} data-reveal="feature">
             <HugeiconsIcon icon={icon} size={28} aria-hidden="true" />
             <div>
               <h3>{label}</h3>

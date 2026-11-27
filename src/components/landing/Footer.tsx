@@ -31,7 +31,7 @@ export function Footer() {
     <footer className="landing-footer">
       <div className="landing-container">
         <AboutSection />
-        <div className="landing-footer__directory">
+        <div className="landing-footer__directory" data-reveal="footer-links">
           <p>Scolup est gratuit et open source, non affilié à Aplim.</p>
           {columns.map(({ label, links }) => (
             <nav key={label} aria-label={label}>
@@ -61,6 +61,7 @@ export function Footer() {
         </div>
         <a
           className="landing-footer__brand"
+          data-reveal="brand"
           href="#top"
           aria-label="Scolup, retour en haut"
         >

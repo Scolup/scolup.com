@@ -339,7 +339,12 @@ html:has(.landing)::-webkit-scrollbar {
 }
 
 #root[inert]
-  :is(.landing-hero__copy, .landing-hero__device, .landing-hero__symbol) {
+  :is(
+    .landing-hero__copy,
+    .landing-hero__actions > a,
+    .landing-hero__device,
+    .landing-hero__symbol
+  ) {
   animation-play-state: paused;
 }
 
@@ -671,6 +676,37 @@ html:has(.landing)::-webkit-scrollbar {
   width: fit-content;
   margin: 0 auto 0.75rem;
   color: var(--accent);
+}
+
+.landing-features > li {
+  padding: 1.25rem 0.9rem;
+  border-radius: 1.5rem;
+  background-color: transparent;
+}
+
+.landing-step-icon {
+  position: relative;
+  display: grid;
+  width: 2.85rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 1rem;
+  background: var(--panel);
+}
+
+@media (width > 48rem) {
+  .landing-steps {
+    position: relative;
+  }
+
+  .landing-steps::before {
+    position: absolute;
+    inset: calc(1.425rem - 1px) 16.67% auto;
+    height: 2px;
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--ink) 29%, transparent);
+    content: "";
+  }
 }
 
 .landing-features h3,
@@ -1265,6 +1301,399 @@ html:has(.landing)::-webkit-scrollbar {
 @media (max-width: 23rem) {
   .landing-hero h1 {
     font-size: clamp(2.7rem, 13vw, 3.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-home {
+    --motion-decelerate: cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .landing-home .site-nav__chevron {
+    transition: rotate 220ms var(--motion-decelerate);
+  }
+
+  .landing-home .site-nav__trigger button[aria-expanded="true"] .site-nav__chevron {
+    rotate: 180deg;
+  }
+
+  .landing-hero__actions > a {
+    animation: landing-hero-link-in 540ms var(--motion-decelerate) 140ms backwards;
+  }
+
+  .landing-hero__actions > a:nth-child(2) {
+    animation-delay: 215ms;
+  }
+
+  @keyframes landing-hero-link-in {
+    from {
+      opacity: 0;
+      translate: 0 0.6rem;
+    }
+  }
+
+  .landing-features > #notes {
+    --feature-motion: landing-grade-trace;
+  }
+
+  .landing-features > #agenda {
+    --feature-motion: landing-calendar-dates;
+  }
+
+  .landing-features > #devoirs {
+    --feature-motion: landing-book-lift;
+  }
+
+  /* Target the graph, dates and right-hand binder in the original icons. */
+  .landing-features > #notes > svg > path:nth-of-type(2),
+  .landing-features > #agenda > svg > path:last-of-type,
+  .landing-features > #devoirs > svg > path:is(:nth-of-type(3), :nth-of-type(n + 5)) {
+    animation: var(--feature-icon-animation, none) 610ms var(--motion-decelerate);
+  }
+
+  .landing-features > #devoirs > svg > path {
+    transform-origin: 64% 83%;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .landing-features > li:hover {
+      --feature-icon-animation: var(--feature-motion);
+    }
+  }
+
+  @media (hover: none) {
+    .landing-features > li[data-reveal-state="shown"] {
+      --feature-icon-animation: var(--feature-motion);
+    }
+  }
+
+  @keyframes landing-grade-trace {
+    from {
+      stroke-dasharray: 32 48;
+      stroke-dashoffset: 32;
+    }
+
+    to {
+      stroke-dasharray: 32 48;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes landing-calendar-dates {
+    from {
+      opacity: 0.25;
+      clip-path: inset(68% 0 0 0);
+      translate: 0 -2px;
+    }
+
+    to {
+      opacity: 1;
+      clip-path: inset(0);
+      translate: 0 0;
+    }
+  }
+
+  @keyframes landing-book-lift {
+    38% {
+      translate: 1px -3px;
+      rotate: 5deg;
+    }
+  }
+
+  .landing-preview__carousel[data-reveal-state="pending"]:not(:focus-within)
+    > [data-slot="carousel-content"] {
+    opacity: 0.84;
+    translate: 0 0.55rem;
+  }
+
+  .landing-preview__carousel[data-reveal-state="shown"] > [data-slot="carousel-content"] {
+    animation: landing-preview-surface 630ms var(--motion-decelerate) backwards;
+  }
+
+  @keyframes landing-preview-surface {
+    from {
+      opacity: 0.84;
+      translate: 0 0.55rem;
+    }
+  }
+
+  .landing-preview__carousel[data-reveal-state="pending"]:not(:focus-within)
+    .landing-preview__media {
+    opacity: 0.7;
+    translate: 0 1.2rem;
+  }
+
+  .landing-preview__carousel:not([data-reveal-state="pending"])
+    [aria-hidden="false"] .landing-preview__media {
+    animation: landing-preview-media-in 650ms var(--motion-decelerate) 70ms backwards;
+  }
+
+  @keyframes landing-preview-media-in {
+    from {
+      opacity: 0.7;
+      translate: 0 1.2rem;
+    }
+  }
+
+  .landing-preview__carousel:not([data-reveal-state="pending"])
+    [aria-hidden="false"] .landing-preview__copy {
+    animation: landing-preview-caption 430ms var(--motion-decelerate) backwards;
+  }
+
+  @keyframes landing-preview-caption {
+    from {
+      opacity: 0.72;
+      translate: 0 -0.55rem;
+    }
+  }
+
+  .landing-steps:has(> li:first-child[data-reveal-state="pending"])::before {
+    scale: 0 1;
+  }
+
+  .landing-steps:has(> li:first-child[data-reveal-state="shown"])::before {
+    transform-origin: left;
+    animation: landing-steps-draw 950ms var(--motion-decelerate) backwards;
+  }
+
+  @keyframes landing-steps-draw {
+    from {
+      scale: 0 1;
+    }
+  }
+
+  [data-reveal="step"][data-reveal-state="pending"] .landing-step-icon {
+    opacity: 0.36;
+    scale: 0.88;
+  }
+
+  [data-reveal="step"][data-reveal-state="shown"] .landing-step-icon {
+    animation: landing-step-mark 540ms var(--motion-decelerate)
+      var(--step-delay, 0ms) backwards;
+  }
+
+  @keyframes landing-step-mark {
+    from {
+      opacity: 0.36;
+      scale: 0.88;
+    }
+  }
+
+  [data-reveal="step"][data-reveal-state="pending"] > :is(h3, p) {
+    opacity: 0.55;
+    translate: 0 0.43rem;
+  }
+
+  [data-reveal="step"][data-reveal-state="shown"] > :is(h3, p) {
+    animation: landing-step-caption 540ms var(--motion-decelerate)
+      calc(var(--step-delay, 0ms) + 105ms) backwards;
+  }
+
+  @keyframes landing-step-caption {
+    from {
+      opacity: 0.55;
+      translate: 0 0.43rem;
+    }
+  }
+
+  [data-reveal="step"][data-reveal-state="shown"] .landing-step-icon::after {
+    position: absolute;
+    inset: 0;
+    border: 1px solid color-mix(in srgb, var(--ink) 46%, transparent);
+    border-radius: inherit;
+    pointer-events: none;
+    content: "";
+    opacity: 0;
+    animation: landing-step-ring 540ms ease-out var(--step-delay, 0ms);
+  }
+
+  @keyframes landing-step-ring {
+    from {
+      opacity: 0.75;
+      scale: 0.97;
+    }
+
+    to {
+      opacity: 0;
+      scale: 1.26;
+    }
+  }
+
+  [data-reveal="faq-row"][data-reveal-state="pending"]:not(:focus-within) {
+    opacity: 0.42;
+    translate: 0 0.85rem;
+  }
+
+  [data-reveal="faq-row"][data-reveal-state="shown"] {
+    animation: landing-faq-row-in 540ms var(--motion-decelerate)
+      var(--faq-row-delay, 0ms) backwards;
+  }
+
+  @keyframes landing-faq-row-in {
+    from {
+      opacity: 0.42;
+      translate: 0 0.85rem;
+    }
+  }
+
+  .landing-faq__list [data-slot="accordion-content"] {
+    height: var(--accordion-panel-height);
+    transition:
+      height 300ms var(--motion-decelerate),
+      opacity 210ms ease-out;
+  }
+
+  .landing-faq__list
+    [data-slot="accordion-content"]:is([data-starting-style], [data-ending-style]) {
+    height: 0;
+    opacity: 0;
+  }
+
+  .landing-faq__list [data-slot="accordion-trigger-icon"] {
+    transition: rotate 250ms var(--motion-decelerate);
+  }
+
+  .landing-vision[data-reveal-state] {
+    position: relative;
+    border-bottom-color: transparent;
+  }
+
+  .landing-vision[data-reveal-state]::after {
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 1px;
+    background: #ffffff40;
+    content: "";
+  }
+
+  .landing-vision[data-reveal-state="pending"]::after {
+    scale: 0 1;
+  }
+
+  .landing-vision[data-reveal-state="shown"]::after {
+    animation: landing-footer-line 900ms var(--motion-decelerate) backwards;
+  }
+
+  @keyframes landing-footer-line {
+    from {
+      scale: 0 1;
+    }
+  }
+
+  .landing-vision[data-reveal-state="pending"]:not(:focus-within) > *,
+  .landing-footer__directory[data-reveal-state="pending"]:not(:focus-within) > * {
+    opacity: 0.34;
+    translate: 0 0.95rem;
+  }
+
+  .landing-vision[data-reveal-state="shown"] > *,
+  .landing-footer__directory[data-reveal-state="shown"] > * {
+    animation: landing-footer-content 700ms var(--motion-decelerate)
+      var(--footer-delay, 0ms) backwards;
+  }
+
+  .landing-vision__team,
+  .landing-footer__directory > :nth-child(2) {
+    --footer-delay: 80ms;
+  }
+
+  .landing-footer__directory > :nth-child(3) {
+    --footer-delay: 140ms;
+  }
+
+  .landing-footer__directory > :nth-child(4) {
+    --footer-delay: 200ms;
+  }
+
+  @keyframes landing-footer-content {
+    from {
+      opacity: 0.34;
+      translate: 0 0.95rem;
+    }
+  }
+
+  [data-reveal="brand"][data-reveal-state="pending"]:not(:focus-within) > * {
+    translate: 0 0.32em;
+  }
+
+  [data-reveal="brand"][data-reveal-state="shown"] > * {
+    animation: landing-brand-rise 720ms var(--motion-decelerate) backwards;
+  }
+
+  @keyframes landing-brand-rise {
+    from {
+      translate: 0 0.32em;
+    }
+  }
+
+  .landing-footer__directory a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    transition: background-size 240ms var(--motion-decelerate), color 160ms ease;
+  }
+
+  .landing-footer__directory a:is(:hover, :focus-visible) {
+    background-size: 100% 1px;
+  }
+
+  .landing-vision__about-link svg {
+    transition: translate 240ms var(--motion-decelerate);
+  }
+
+  .landing-vision__about-link:is(:hover, :focus-visible) svg {
+    translate: 0.15rem -0.15rem;
+  }
+
+  @media (width > 48rem) {
+    .landing-steps > li:nth-child(2) {
+      --step-delay: 225ms;
+    }
+
+    .landing-steps > li:nth-child(3) {
+      --step-delay: 450ms;
+    }
+
+    [data-reveal="faq-row"]:nth-child(3n + 2) {
+      --faq-row-delay: 55ms;
+    }
+
+    [data-reveal="faq-row"]:nth-child(3n) {
+      --faq-row-delay: 110ms;
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .landing-preview__carousel .landing-preview__arrow:not(:disabled):hover,
+  .landing-faq__list [data-slot="accordion-item"]:hover {
+    background-color: var(--panel);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .landing-preview__carousel .landing-preview__arrow,
+  .landing-faq__list [data-slot="accordion-item"] {
+    transition: background-color 190ms ease;
+  }
+
+  .landing-preview__arrow > svg,
+  .landing-vision__team .team-avatar {
+    transition: translate 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 160ms;
+  }
+
+  .landing-vision__team a:hover .team-avatar {
+    translate: 0 -0.25rem;
+  }
+
+  .landing-preview__arrow[data-slot="carousel-previous"]:hover > svg {
+    translate: -0.17rem;
+  }
+
+  .landing-preview__arrow[data-slot="carousel-next"]:hover > svg {
+    translate: 0.17rem;
   }
 }
 

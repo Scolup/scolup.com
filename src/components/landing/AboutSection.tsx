@@ -11,7 +11,11 @@ export function AboutSection() {
   const [team] = useState(getShuffledTeam)
 
   return (
-    <section className="landing-vision" aria-labelledby="vision-title">
+    <section
+      className="landing-vision"
+      data-reveal="footer-intro"
+      aria-labelledby="vision-title"
+    >
       <div className="landing-vision__intro">
         <h2 id="vision-title">Par des étudiants, pour des étudiants.</h2>
         <p>

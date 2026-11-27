@@ -23,7 +23,7 @@ export function HowItWorksSection() {
       </div>
       <ol className="landing-steps">
         {STEPS.map(({ title, description }, index) => (
-          <li key={title}>
+          <li key={title} data-reveal="step">
             <div className="landing-step-icon" aria-hidden="true">
               <HugeiconsIcon icon={stepIcons[index]} size={25} />
             </div>
