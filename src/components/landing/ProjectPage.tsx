@@ -173,6 +173,8 @@ export function ProjectPage({ page }: { page: "team" | "source" }) {
             <a
               className="project-page__art project-page__art--source"
               href="https://opensource.org/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <img
                 src="/logos/osi.svg"
