@@ -28,7 +28,12 @@ const rightIcons = {
 export function HeroSection() {
   return (
     <section className="landing-hero" aria-labelledby="hero-title">
-      <div className="landing-hero__backdrop" aria-hidden="true" />
+      <img
+        className="landing-hero__backdrop"
+        src="/screenshots/Homepage.png"
+        alt=""
+        data-startup-image=""
+      />
       <div className="landing-hero__art">
         <div className="landing-hero__scene">
           <div className="landing-hero__device">
@@ -39,6 +44,7 @@ export function HeroSection() {
               width={861}
               height={1827}
               fetchPriority="high"
+              data-startup-image=""
             />
           </div>
           <div
@@ -77,6 +83,7 @@ export function HeroSection() {
               alt=""
               width={24}
               height={24}
+              data-startup-image=""
             />
           </div>
         </div>

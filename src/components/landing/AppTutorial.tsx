@@ -77,6 +77,7 @@ function TutorialPhone({ step }: { step: number }) {
         height={1827}
         alt=""
         fetchPriority="high"
+        data-startup-image=""
       />
       <div className="app-tutorial-phone__screen">
         <div className="tutorial-safari">

@@ -310,7 +310,11 @@ html:has(.landing)::-webkit-scrollbar {
   position: absolute;
   z-index: -2;
   inset: -2rem -2rem 3rem;
-  background: url("/screenshots/Homepage.png") center 37% / cover no-repeat;
+  width: calc(100% + 4rem);
+  height: calc(100% - 1rem);
+  max-width: none;
+  object-fit: cover;
+  object-position: center 37%;
   filter: grayscale(1) brightness(2.4) blur(42px);
   transform: rotate(-8deg) scale(1.2);
   opacity: 0.78;
@@ -332,6 +336,11 @@ html:has(.landing)::-webkit-scrollbar {
 
 .landing-hero__copy {
   animation: landing-appear 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+#root[inert]
+  :is(.landing-hero__copy, .landing-hero__device, .landing-hero__symbol) {
+  animation-play-state: paused;
 }
 
 .landing-hero h1 {

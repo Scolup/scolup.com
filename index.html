@@ -4,6 +4,72 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/logos/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html:not(.light):not(.dark) {
+        background: #111;
+      }
+
+      .scolup-startup {
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #111;
+        color: #fff;
+        font: 1rem / 1.5 system-ui, sans-serif;
+        text-align: center;
+      }
+
+      .scolup-startup img {
+        display: block;
+        filter: brightness(0) invert(1);
+      }
+
+      .scolup-startup__recovery {
+        position: absolute;
+        inset-inline: 1rem;
+        top: calc(50% + 3.25rem);
+        visibility: hidden;
+      }
+
+      .scolup-startup__recovery p {
+        margin: 0.5rem 0;
+      }
+
+      .scolup-startup__recovery a {
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      #root:empty + .scolup-startup .scolup-startup__recovery {
+        animation: scolup-startup-reveal 0s 15s forwards;
+      }
+
+      @keyframes scolup-startup-reveal {
+        to {
+          visibility: visible;
+        }
+      }
+
+      .scolup-startup[data-ready] {
+        pointer-events: none;
+        animation: scolup-startup-fade 400ms ease-out forwards;
+      }
+
+      @keyframes scolup-startup-fade {
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .scolup-startup[data-ready] {
+          display: none;
+        }
+      }
+    </style>
 
     <title>Scolup – Gamifie ta vie scolaire</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -91,52 +157,30 @@
         ]
       }
     </script>
-    <style>
-      .scolup-startup {
-        display: grid;
-        min-height: 100vh;
-        place-content: center;
-        gap: 0.75rem;
-        padding: 1.5rem;
-        background: #111;
-        color: #fff;
-        font:
-          1rem / 1.5 system-ui,
-          sans-serif;
-        text-align: center;
-        visibility: hidden;
-        animation: scolup-startup-reveal 0s 8s forwards;
-      }
-
-      @keyframes scolup-startup-reveal {
-        to {
-          visibility: visible;
-        }
-      }
-
-      .scolup-startup h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-
-      .scolup-startup a {
-        color: inherit;
-        text-decoration: underline;
-      }
-
-      #root:not(:empty) + .scolup-startup {
-        display: none;
-      }
-    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <main class="scolup-startup">
-      <h1>Scolup</h1>
-      <p>Si le site ne s’affiche pas, essaie de recharger la page.</p>
-      <p><a href="">Recharger la page</a></p>
-      <p><a href="https://app.scolup.com">Ouvrir l’application</a></p>
-    </main>
+    <div id="root" inert></div>
+    <div id="scolup-startup" class="scolup-startup">
+      <div role="status">
+        <picture>
+          <source
+            media="(prefers-reduced-motion: reduce)"
+            srcset="/logos/logo.svg"
+          />
+          <img
+            src="/logos/loader.svg"
+            width="64"
+            height="64"
+            alt="Chargement de Scolup"
+          />
+        </picture>
+      </div>
+      <div class="scolup-startup__recovery">
+        <p>Le chargement prend plus de temps que prévu.</p>
+        <p><a href="">Recharger la page</a></p>
+        <p><a href="https://app.scolup.com">Ouvrir l’application</a></p>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
