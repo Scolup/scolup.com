@@ -104,6 +104,14 @@
           1rem / 1.5 system-ui,
           sans-serif;
         text-align: center;
+        visibility: hidden;
+        animation: scolup-startup-reveal 0s 8s forwards;
+      }
+
+      @keyframes scolup-startup-reveal {
+        to {
+          visibility: visible;
+        }
       }
 
       .scolup-startup h1 {
